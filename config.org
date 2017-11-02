@@ -1,0 +1,5 @@
+#+begin_src emacs-lisp
+(use-package ido
+	     :config
+	     (ido-mode 1))
+#+end_src
