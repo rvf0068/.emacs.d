@@ -1,5 +1,141 @@
-#+begin_src emacs-lisp
+#+options: toc:nil date:nil author:nil
+
+#+latex_header: \usepackage{listings}
+
+* auctex
+
+  https://www.gnu.org/software/auctex/
+
+  #+BEGIN_QUOTE
+  AUCTeX is an extensible package for writing and formatting TeX files
+  in GNU Emacs and XEmacs. It supports many different TeX macro
+  packages, including AMS-TeX, LaTeX, Texinfo, ConTeXt, and docTeX
+  (dtx files).
+  #+END_QUOTE
+
+  #+begin_src emacs-lisp
+(use-package tex
+  :ensure auctex
+  :config
+  (setq Tex-auto-save t)
+  (setq Tex-parse-self t)
+  (setq TeX-save-query nil)
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  (setq reftex-plug-into-AUCTeX t))
+  #+end_src
+
+* cdlatex
+
+  https://staff.fnwi.uva.nl/c.dominik/Tools/cdlatex/
+
+  #+BEGIN_QUOTE
+  CDLaTeX is a minor mode for Emacs supporting fast insertion of
+  environment templates and math stuff in LaTeX. Similar commands are
+  also offered as part of the AUCTeX package, but it is not the same -
+  CDLaTeX focuses on speediness for inserting LaTeX constructs. I
+  myself am using CDLaTeX on top of AUCTeX.
+  #+END_QUOTE
+
+  #+begin_src emacs-lisp
+(use-package cdlatex
+  :ensure t
+  :config
+  (setq cdlatex-math-symbol-alist
+	'(( ?c  ("\\colon"))
+	  ( ?m  ("\\mu" "\\mapsto"))
+	  ( ?p  ("\\pi" "\\varpi" "\\perp"))
+	  ( ?O  ("\\Omega" "\\mathrm{Orb}"))
+	  ( ?S  ("\\Sigma" "\\mathrm{Stab}"))
+	  ( ?-  ("\\cap" "\\leftrightarrow" "\\longleftrightarrow" ))
+	  ( ?.  ("\\ldots" "\\cdots" "\\cdot" ))
+	  ( ?<  ("\\leq" "\\langle"))
+	  ( ?>  ("\\geq" "\\rangle"))
+	  ( 123  ("\\{ \\}" ))
+	  ( 125  ("\\subseteq" ))
+	  ( ?\[  ("\\subseteq" ))))
+
+  (setq cdlatex-math-modify-alist
+      '(( ?B    "\\mathbb"           nil        t   nil nil )
+	( ?a    "\\overrightarrow"   nil        t   nil nil )))
+
+  (setq cdlatex-command-alist
+      '(("bin"         "Insert \\binom{}{}"
+	 "\\binom{?}{}"           cdlatex-position-cursor nil nil t)
+	("norm"         "Insert \\Vert \\Vert"
+	 "\\Vert ?\\Vert"           cdlatex-position-cursor nil nil t)
+	("gen"         "Insert \\langle \\rangle"
+	 "\\langle ?\\rangle"           cdlatex-position-cursor nil nil t)
+	("set"         "Insert a set"
+	 "\\{?\\mid \\}"           cdlatex-position-cursor nil nil t)))
+
+  (setq cdlatex-simplify-sub-super-scripts nil))
+  #+end_src
+
+* ido
+
+  #+begin_src emacs-lisp
 (use-package ido
-	     :config
-	     (ido-mode 1))
-#+end_src
+  :config
+  (ido-mode 1))
+  #+end_src
+
+* smartparens
+
+  https://github.com/Fuco1/smartparens
+
+  #+BEGIN_QUOTE
+  Smartparens is a minor mode for dealing with pairs in Emacs.
+  #+END_QUOTE
+
+  #+begin_src emacs-lisp
+(use-package smartparens
+  :ensure t
+  :config
+  (require 'smartparens-config)
+  (smartparens-global-mode 1)
+  (sp-pair "`" nil :actions nil)
+  (sp-pair "'" nil :actions nil))
+  #+end_src
+
+* smex
+
+  https://github.com/nonsequitur/smex/
+
+  #+BEGIN_QUOTE
+  Smex is a M-x enhancement for Emacs. Built on top of Ido, it
+  provides a convenient interface to your recently and most frequently
+  used commands. And to all the other commands, too.
+  #+END_QUOTE
+
+  #+begin_src emacs-lisp
+(use-package smex
+  :ensure t
+  :bind ("M-x" . smex)
+  :config (smex-initialize))
+  #+end_src
+
+* yasnippet
+
+  https://github.com/joaotavora/yasnippet
+
+  #+BEGIN_QUOTE
+  YASnippet is a template system for Emacs. It allows you to type an
+  abbreviation and automatically expand it into function
+  templates. Bundled language templates include: C, C++, C#, Perl,
+  Python, Ruby, SQL, LaTeX, HTML, CSS and more. The snippet syntax is
+  inspired from TextMate's syntax, you can even import most TextMate
+  templates to YASnippet. Watch a demo on YouTube.
+  #+END_QUOTE
+
+  #+begin_src emacs-lisp
+(use-package yasnippet
+  :ensure t
+  :config (yas-global-mode))
+  #+end_src
+
+
+* COMMENT Not for termux
+
+** ob-ipython
+
+** sage-shell-mode

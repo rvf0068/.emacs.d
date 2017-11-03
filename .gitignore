@@ -1,2 +1,8 @@
 elpa/
 /config.el
+*~
+/smex-items
+auto/
+/config.pdf
+/config.tex
+/ido.last
