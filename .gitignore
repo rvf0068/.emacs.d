@@ -6,3 +6,7 @@ auto/
 /config.pdf
 /config.tex
 /ido.last
+/config.aux
+/config.log
+/config.out
+/config.synctex.gz

@@ -134,6 +134,17 @@
   #+end_src
 
 
+* dired
+
+  #+BEGIN_SRC emacs-lisp
+    (use-package dired
+      :bind (:map dired-mode-map
+      ("r" . termux-share)))
+  #+END_SRC
+
+* magit
+
+* helm
 * COMMENT Not for termux
 
 ** ob-ipython
