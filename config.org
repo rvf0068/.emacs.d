@@ -133,18 +133,42 @@
   :config (yas-global-mode))
   #+end_src
 
-
-* dired
+* dired-launch
 
   #+BEGIN_SRC emacs-lisp
-    (use-package dired
-      :bind (:map dired-mode-map
-      ("r" . termux-share)))
+(use-package dired-launch
+  :ensure t
+  :config
+  (setq dired-launch-default-launcher
+	(if (equal (system-name) "localhost")
+	    '("termux-share")
+	  '("xdg-open"))))
   #+END_SRC
 
 * magit
 
+  #+begin_src emacs-lisp
+(use-package magit
+  :ensure t
+  :bind ("C-c m" . magit-status))
+  #+end_src
+
 * helm
+
+  #+begin_src emacs-lisp
+(use-package helm
+  :ensure t)
+  #+end_src
+
+* zenburn-theme
+
+  #+begin_src emacs-lisp
+(use-package zenburn-theme
+  :ensure t)
+  #+end_src
+
+
+
 * COMMENT Not for termux
 
 ** ob-ipython
