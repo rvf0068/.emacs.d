@@ -160,13 +160,6 @@
   :ensure t)
   #+end_src
 
-* zenburn-theme
-
-  #+begin_src emacs-lisp
-(use-package zenburn-theme
-  :ensure t)
-  #+end_src
-
 
 
 * COMMENT Not for termux

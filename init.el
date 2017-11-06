@@ -10,32 +10,17 @@
 
 (setq package-user-dir (expand-file-name "elpa"  my-emacs-dir))
 
-;; From https://github.com/DarwinAwardWinner/dotemacs/blob/master/init.el
-;;
 ;; Initialize the emacs packaging system
 (require 'package)
 (package-initialize)
 
-;; Ensure latest org-mode is installed from
-;; http://orgmode.org/elpa.html
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
-(defun package-ensure (pkg &optional dont-select)
-  "Ensure PKG is installed, refreshing if necessary."
-  (unless (package-installed-p pkg)
-    (unless (memq pkg (mapcar #'car package-archive-contents))
-      (package-refresh-contents))
-    (package-install pkg dont-select)))
+(package-refresh-contents)
 
-(condition-case nil
-    (package-ensure 'org-plus-contrib)
-  (error (display-warning "Could not install latest org-mode. Falling back to bundled version.")))
+(package-install 'org-plus-contrib)
 
-(condition-case nil
-    (package-ensure 'use-package)
-  (error (display-warning "Could not install use-package.")))
+(package-install 'use-package)
 
-(save-window-excursion 
-  (org-babel-load-file 
-   (expand-file-name "config.org" my-emacs-dir)))
+(org-babel-load-file  (expand-file-name "config.org" my-emacs-dir))
