@@ -12,15 +12,16 @@
 
 ;; Initialize the emacs packaging system
 (require 'package)
-(package-initialize)
 
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 
-(package-refresh-contents)
+(package-initialize)
 
-(package-install 'org-plus-contrib)
-
-(package-install 'use-package)
+(unless (and (package-installed-p 'use-package)
+	     (package-installed-p 'org-plus-contrib))
+  (package-refresh-contents)
+  (package-install 'use-package)
+  (package-install 'org-plus-contrib))
 
 (org-babel-load-file  (expand-file-name "config.org" my-emacs-dir))
