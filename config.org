@@ -71,12 +71,74 @@
   (setq cdlatex-simplify-sub-super-scripts nil))
   #+end_src
 
+* dired-launch
+
+  #+BEGIN_SRC emacs-lisp
+(use-package dired-launch
+  :ensure t
+  :config
+  (setq dired-launch-default-launcher
+	(if (equal (system-name) "localhost")
+	    '("termux-share")
+	  '("xdg-open"))))
+  #+END_SRC
+
+* eink
+
+  https://github.com/maio/eink-emacs
+
+  #+BEGIN_QUOTE
+  Low distraction, minimalistic color theme for Emacs emulating
+  reading on E Ink devices.
+  #+END_QUOTE
+
+  #+begin_src emacs-lisp
+(use-package eink-theme
+  :ensure t)
+  #+end_src
+
+* gap-mode
+
+  #+begin_src emacs-lisp
+(use-package gap-mode
+  :ensure t)
+  #+end_src
+
+* helm
+
+  #+begin_src emacs-lisp
+(use-package helm
+  :ensure t)
+  #+end_src
+
 * ido
 
   #+begin_src emacs-lisp
 (use-package ido
   :config
   (ido-mode 1))
+  #+end_src
+
+* magit
+
+  #+begin_src emacs-lisp
+(use-package magit
+  :ensure t
+  :bind ("C-c m" . magit-status))
+  #+end_src
+
+* org-pomodoro
+
+  #+begin_src emacs-lisp
+(use-package org-pomodoro
+  :ensure t)
+  #+end_src
+
+* org-ref
+
+  #+begin_src emacs-lisp
+(use-package org-ref
+  :ensure t)
   #+end_src
 
 * smartparens
@@ -133,46 +195,6 @@
   :config (yas-global-mode))
   #+end_src
 
-* dired-launch
-
-  #+BEGIN_SRC emacs-lisp
-(use-package dired-launch
-  :ensure t
-  :config
-  (setq dired-launch-default-launcher
-	(if (equal (system-name) "localhost")
-	    '("termux-share")
-	  '("xdg-open"))))
-  #+END_SRC
-
-* magit
-
-  #+begin_src emacs-lisp
-(use-package magit
-  :ensure t
-  :bind ("C-c m" . magit-status))
-  #+end_src
-
-* helm
-
-  #+begin_src emacs-lisp
-(use-package helm
-  :ensure t)
-  #+end_src
-
-* eink
-
-  https://github.com/maio/eink-emacs
-
-  #+BEGIN_QUOTE
-  Low distraction, minimalistic color theme for Emacs emulating
-  reading on E Ink devices.
-  #+END_QUOTE
-
-  #+begin_src emacs-lisp
-(use-package eink-theme
-  :ensure t)
-  #+end_src
 
 * COMMENT Not for termux
 
