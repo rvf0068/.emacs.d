@@ -160,7 +160,19 @@
   :ensure t)
   #+end_src
 
+* eink
 
+  https://github.com/maio/eink-emacs
+
+  #+BEGIN_QUOTE
+  Low distraction, minimalistic color theme for Emacs emulating
+  reading on E Ink devices.
+  #+END_QUOTE
+
+  #+begin_src emacs-lisp
+(use-package eink-theme
+  :ensure t)
+  #+end_src
 
 * COMMENT Not for termux
 
