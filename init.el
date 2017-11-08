@@ -27,6 +27,8 @@
 ;; From http://www.emacswiki.org/emacs/LoadPath#AddSubDirectories
 ;; to add a directory and its subdirectories
 (let ((default-directory (expand-file-name "site-lisp" my-emacs-personal-dir)))
+  ;;;; THE NEXT ROW SHOULD BE MODIFIED LATER
+  (make-directory default-directory t)
   (setq load-path
         (append
          (let ((load-path (copy-sequence load-path))) ;; Shadow
