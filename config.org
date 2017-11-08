@@ -71,16 +71,49 @@
   (setq cdlatex-simplify-sub-super-scripts nil))
   #+end_src
 
-* dired-launch
+* dired
+
+  https://www.gnu.org/software/emacs/manual/html_node/emacs/Dired.html
+
+  #+BEGIN_QUOTE
+  Dired makes an Emacs buffer containing a listing of a directory, and
+  optionally some of its subdirectories as well. You can use the
+  normal Emacs commands to move around in this buffer, and special
+  Dired commands to operate on the listed files.
+  #+END_QUOTE
 
   #+BEGIN_SRC emacs-lisp
-(use-package dired-launch
-  :ensure t
+(use-package dired
+  :bind (:map dired-mode-map
+	      ("r". dired-start-process))
+  :preface
+  ;; see https://oremacs.com/2015/01/04/dired-nohup/
+  (defun dired-start-process (cmd &optional file-list)
+    (interactive
+     (let ((files (dired-get-marked-files
+		   t current-prefix-arg)))
+       (list
+	(dired-read-shell-command "& on %s: "
+				  current-prefix-arg files)
+	files)))
+    (let (list-switch)
+      (start-process
+       cmd nil shell-file-name
+       shell-command-switch
+       (format
+	"nohup 1>/dev/null 2>/dev/null %s \"%s\""
+	(if (and (> (length file-list) 1)
+		 (setq list-switch
+		       (cadr (assoc cmd dired-filelist-cmd))))
+	    (format "%s %s" cmd list-switch)
+	  cmd)
+	(mapconcat #'expand-file-name file-list "\" \"")))))
   :config
   (setq dired-launch-default-launcher
 	(if (equal (system-name) "localhost")
 	    '("termux-share")
-	  '("xdg-open"))))
+	  '("xdg-open")))
+  (use-package dired-aux))
   #+END_SRC
 
 * eink
