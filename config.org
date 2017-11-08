@@ -163,18 +163,37 @@
   :bind ("C-c m" . magit-status))
   #+end_src
 
-* org-pomodoro
+* org
 
   #+begin_src emacs-lisp
-(use-package org-pomodoro
-  :ensure t)
-  #+end_src
-
-* org-ref
-
-  #+begin_src emacs-lisp
-(use-package org-ref
-  :ensure t)
+(use-package org
+  :bind (:map org-mode-map
+	      ("$". yf/org-electric-dollar))
+  :preface
+  ;; from Nicolas Richard <theonewiththeevillook@yahoo.fr>
+  ;; Date: Fri, 8 Mar 2013 16:23:02 +0100
+  ;; Message-ID: <87vc913oh5.fsf@yahoo.fr>
+  (defun yf/org-electric-dollar nil
+    "When called once, insert \\(\\) and leave point in between.
+When called twice, replace the previously inserted \\(\\) by one $."
+    (interactive)
+    (if (and (looking-at "\\\\)") (looking-back "\\\\("))
+	(progn (delete-char 2)
+	       (delete-char -2)
+	       (insert "$"))
+      (insert "\\(\\)")
+      (backward-char 2)))
+  (defun my-org-mode-hook ()
+    (turn-on-auto-revert-mode)
+    (turn-on-org-cdlatex))
+  :config
+  (use-package org-pomodoro
+    :ensure t)
+  (use-package org-ref
+    :ensure t)
+  (setq org-latex-listings t
+	org-src-fontify-natively t)
+  (add-hook 'org-mode-hook #'my-org-mode-hook))
   #+end_src
 
 * smartparens
