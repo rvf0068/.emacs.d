@@ -24,17 +24,4 @@
   (package-install 'use-package)
   (package-install 'org-plus-contrib))
 
-;; From http://www.emacswiki.org/emacs/LoadPath#AddSubDirectories
-;; to add a directory and its subdirectories
-(let ((default-directory (expand-file-name "site-lisp" my-emacs-personal-dir)))
-  ;;;; THE NEXT ROW SHOULD BE MODIFIED LATER
-  (make-directory default-directory t)
-  (setq load-path
-        (append
-         (let ((load-path (copy-sequence load-path))) ;; Shadow
-           (append
-            (copy-sequence (normal-top-level-add-to-load-path '(".")))
-            (normal-top-level-add-subdirs-to-load-path)))
-         load-path)))
-
 (org-babel-load-file  (expand-file-name "config.org" my-emacs-dir))

@@ -5,6 +5,28 @@
 #+latex_header: \lstdefinestyle{source}{basicstyle=\footnotesize\ttfamily,frame=tb}
 #+latex_header: \lstset{style=source}
 
+
+* init
+
+  #+begin_src emacs-lisp
+;; From http://www.emacswiki.org/emacs/LoadPath#AddSubDirectories
+;; to add a directory and its subdirectories
+(let ((default-directory (expand-file-name "site-lisp" my-emacs-personal-dir)))
+  ;;;; THE NEXT ROW SHOULD BE MODIFIED LATER
+  (make-directory default-directory t)
+  (setq load-path
+        (append
+         (let ((load-path (copy-sequence load-path))) ;; Shadow
+           (append
+            (copy-sequence (normal-top-level-add-to-load-path '(".")))
+            (normal-top-level-add-subdirs-to-load-path)))
+         load-path)))
+
+(column-number-mode t)
+
+(display-time)
+  #+end_src
+
 * auctex
 
   https://www.gnu.org/software/auctex/
