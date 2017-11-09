@@ -159,7 +159,10 @@
 
   #+begin_src emacs-lisp
 (use-package gap-mode
-  :ensure t)
+  :ensure t
+  :config
+  (setq gap-executable "gap"
+	gap-start-options  '("-E" "-f" "-b" "-m" "2m")))
   #+end_src
 
 * helm
