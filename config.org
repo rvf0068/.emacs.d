@@ -9,8 +9,8 @@
   #+begin_src emacs-lisp
 ;; From http://www.emacswiki.org/emacs/LoadPath#AddSubDirectories
 ;; to add a directory and its subdirectories
-(let* ((default-directory (expand-file-name "site-lisp" my-emacs-personal-dir))
-      (personal-file (expand-file-name "personal.el" default-directory)))
+(let ((default-directory my-emacs-personal-dir)
+      (personal-file (expand-file-name "personal.el" my-emacs-personal-dir)))
   ;;;; THE NEXT ROW SHOULD BE MODIFIED LATER
   (make-directory default-directory t)
   (when (file-exists-p personal-file)
