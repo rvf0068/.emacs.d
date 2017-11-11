@@ -26,6 +26,43 @@
 (column-number-mode t)
 
 (display-time)
+
+;; From: sandipchitale@yahoo.com (Sandip Chitale)
+;; Newsgroups: gnu.emacs.sources
+;; Subject: CODE: Duplicate line or region backward or forward
+;; Date: 7 Feb 2004 12:15:35 -0800
+(defun duplicate-line-backward ()
+  "Duplicate the current line backward."
+  (interactive "*")
+  (save-excursion
+    (let ((contents (buffer-substring
+                     (line-beginning-position)
+                     (line-end-position))))
+      (beginning-of-line)
+      (insert contents ?\n)))
+  (previous-line 1))
+
+(defun duplicate-line-forward ()
+  "Duplicate the current line forward."
+  (interactive "*")
+  (save-excursion
+    (let ((contents (buffer-substring
+                     (line-beginning-position)
+                     (line-end-position))))
+      (end-of-line)
+      (insert ?\n contents)))
+  (next-line 1))
+
+;; from http://stackoverflow.com/a/9414763/577007
+(defun prelude-copy-file-name-to-clipboard ()
+  "Copy the current buffer file name to the clipboard."
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (when filename
+      (kill-new filename)
+      (message "Copied buffer file name '%s' to the clipboard." filename))))
   #+end_src
 
 * auctex
@@ -192,8 +229,9 @@
 
   #+begin_src emacs-lisp
 (use-package org
-  :bind (:map org-mode-map
-	      ("$". yf/org-electric-dollar))
+  :bind (("C-c a" . org-agenda)
+	 :map org-mode-map
+	 ("$". yf/org-electric-dollar))
   :preface
   ;; from Nicolas Richard <theonewiththeevillook@yahoo.fr>
   ;; Date: Fri, 8 Mar 2013 16:23:02 +0100
@@ -218,7 +256,12 @@ When called twice, replace the previously inserted \\(\\) by one $."
     :ensure t)
   (setq org-latex-listings t
 	org-src-fontify-natively t)
-  (add-hook 'org-mode-hook #'my-org-mode-hook))
+  (add-hook 'org-mode-hook #'my-org-mode-hook)
+  ;; when in :bind, these produce "Autoloading failed to define function"
+  (define-key org-mode-map (kbd "s-j") #'org-babel-next-src-block)
+  (define-key org-mode-map (kbd "s-k") #'org-babel-previous-src-block)
+  (define-key org-mode-map (kbd "s-l") #'org-edit-src-code)
+  (define-key org-src-mode-map (kbd "s-l") #'org-edit-src-exit))
   #+end_src
 
 * smartparens
