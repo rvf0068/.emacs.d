@@ -1,19 +1,20 @@
-
 #+options: toc:nil date:nil author:nil
 
 #+latex_header: \usepackage{listings}
 #+latex_header: \lstdefinestyle{source}{basicstyle=\footnotesize\ttfamily,frame=tb}
 #+latex_header: \lstset{style=source}
 
-
 * init
 
   #+begin_src emacs-lisp
 ;; From http://www.emacswiki.org/emacs/LoadPath#AddSubDirectories
 ;; to add a directory and its subdirectories
-(let ((default-directory (expand-file-name "site-lisp" my-emacs-personal-dir)))
+(let* ((default-directory (expand-file-name "site-lisp" my-emacs-personal-dir))
+      (personal-file (expand-file-name "personal.el" default-directory)))
   ;;;; THE NEXT ROW SHOULD BE MODIFIED LATER
   (make-directory default-directory t)
+  (when (file-exists-p personal-file)
+    (load personal-file))
   (setq load-path
         (append
          (let ((load-path (copy-sequence load-path))) ;; Shadow
