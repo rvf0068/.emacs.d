@@ -277,7 +277,8 @@ When called twice, replace the previously inserted \\(\\) by one $."
   :ensure t
   :config
   (require 'smartparens-config)
-  (smartparens-global-mode 1))
+  (smartparens-global-mode 1)
+  (show-smartparens-global-mode 1))
   #+end_src
 
 * smex
