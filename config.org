@@ -10,11 +10,14 @@
 ;; From http://www.emacswiki.org/emacs/LoadPath#AddSubDirectories
 ;; to add a directory and its subdirectories
 (let ((default-directory my-emacs-personal-dir)
-      (personal-file (expand-file-name "personal.el" my-emacs-personal-dir)))
+      (personal-el-file (expand-file-name "personal.el" my-emacs-personal-dir))
+      (personal-org-file (expand-file-name "personal.org" my-emacs-personal-dir)))
   ;;;; THE NEXT ROW SHOULD BE MODIFIED LATER
   (make-directory default-directory t)
-  (when (file-exists-p personal-file)
-    (load personal-file))
+  (if (file-exists-p personal-org-file)
+      (org-babel-load-file personal-org-file)
+    (if (file-exists-p personal-file)
+	(load personal-el-file)))
   (setq load-path
         (append
          (let ((load-path (copy-sequence load-path))) ;; Shadow
