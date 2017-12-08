@@ -202,7 +202,7 @@
   :ensure t
   :config
   (setq gap-executable "gap"
-	gap-start-options  '("-E" "-f" "-b" "-m" "2m")))
+	gap-start-options  '("-E" "-f" "-b" "-m" "1024m")))
   #+end_src
 
 * helm
