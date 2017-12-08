@@ -268,7 +268,7 @@
 	:ensure t)
       (org-babel-do-load-languages
        'org-babel-load-languages
-       '((python . t) 
+       '((python . t)
 	 (latex . t)))
       (setq org-beamer-environments-extra
 	    '(("corollary"   "r" "\\begin{corollary}%a%U"   "\\end{corollary}")
