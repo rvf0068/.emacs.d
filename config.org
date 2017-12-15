@@ -287,8 +287,12 @@
 	    '(("corollary"   "r" "\\begin{corollary}%a%U"   "\\end{corollary}")
 	      ("lemma"       "l" "\\begin{lemma}%a%U"       "\\end{lemma}")
 	      ("proposition" "P" "\\begin{proposition}%a%U" "\\end{proposition}"))
+	    org-export-with-tags nil
 	    org-latex-listings t
+	    org-log-done 'note
+	    org-return-follows-link t
 	    org-src-fontify-natively t
+	    org-src-preserve-indentation t
 	    org-support-shift-select 'always)
       (add-hook 'org-mode-hook #'my-org-mode-hook)
       ;; when in :bind, these produce "Autoloading failed to define function"
