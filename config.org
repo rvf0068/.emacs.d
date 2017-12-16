@@ -32,6 +32,15 @@
     (if (file-exists-p personal-file)
 	(load personal-el-file))))
 
+(make-directory "~/backups/" t)
+
+(defun make-backup-file-name (file-name)
+  "Create the non-numeric backup file name for `file-name'."
+  (require 'dired)
+  (if (file-exists-p "~/backups")
+      (concat (expand-file-name "~/backups/")
+              (dired-replace-in-string "/" "-" file-name))
+    (concat file-name "~")))
 (column-number-mode t)
 
 (display-time)
