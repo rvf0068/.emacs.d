@@ -3,6 +3,8 @@
 #+latex_header: \usepackage{listings}
 #+latex_header: \lstdefinestyle{source}{basicstyle=\footnotesize\ttfamily,frame=tb}
 #+latex_header: \lstset{style=source}
+#+latex_header: \usepackage[margin=2.5cm]{geometry}
+
 
 * init
 
