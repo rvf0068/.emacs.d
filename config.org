@@ -103,11 +103,14 @@
 (use-package tex
   :ensure auctex
   :config
-  (setq Tex-auto-save t)
-  (setq Tex-parse-self t)
-  (setq TeX-save-query nil)
+  (setq TeX-auto-save t
+	TeX-electric-escape t
+	TeX-insert-braces nil
+	TeX-parse-self t
+	TeX-save-query nil)
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-  (setq reftex-plug-into-AUCTeX t))
+  (setq reftex-plug-into-AUCTeX t
+	reftex-use-external-file-finders t))
   #+end_src
 
 * bibretrieve
