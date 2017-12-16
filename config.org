@@ -41,7 +41,12 @@
       (concat (expand-file-name "~/backups/")
               (dired-replace-in-string "/" "-" file-name))
     (concat file-name "~")))
+
+(setq-default abbrev-mode t)
+
 (column-number-mode t)
+
+(display-battery-mode)
 
 (display-time)
 
