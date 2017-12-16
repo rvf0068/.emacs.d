@@ -294,6 +294,8 @@
       :config
       (use-package htmlize
 	:ensure t)
+      (use-package ob-ipython
+	:ensure t)
       (use-package org-pomodoro
 	:ensure t)
       (use-package org-ref
