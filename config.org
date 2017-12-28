@@ -102,6 +102,7 @@
   #+begin_src emacs-lisp
 (use-package tex
   :ensure auctex
+  :mode ("\\.tex\\'" . latex-mode)
   :config
   (setq TeX-auto-save t
 	TeX-electric-escape t
