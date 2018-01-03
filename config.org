@@ -29,7 +29,7 @@
   (normal-top-level-add-subdirs-to-load-path)
   (if (file-exists-p personal-org-file)
       (org-babel-load-file personal-org-file)
-    (if (file-exists-p personal-file)
+    (if (file-exists-p personal-el-file)
 	(load personal-el-file))))
 
 (make-directory "~/backups/" t)
