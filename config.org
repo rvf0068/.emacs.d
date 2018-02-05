@@ -297,6 +297,8 @@
 	:ensure t)
       (use-package ob-ipython
 	:ensure t)
+      (use-package ob-sagemath
+	:ensure t)
       (use-package org-pomodoro
 	:ensure t)
       (use-package org-ref
@@ -306,6 +308,7 @@
       (org-babel-do-load-languages
        'org-babel-load-languages
        '((python . t)
+         (ruby . t)
 	 (latex . t)))
       (setq org-beamer-environments-extra
 	    '(("corollary"   "r" "\\begin{corollary}%a%U"   "\\end{corollary}")
