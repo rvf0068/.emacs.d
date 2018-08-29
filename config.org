@@ -228,7 +228,7 @@
   #+END_QUOTE
 
   #+begin_src emacs-lisp
-(use-package eink-theme
+(use-package zerodark-theme
   :ensure t)
   #+end_src
 
@@ -347,6 +347,7 @@
   :config
   (pdf-tools-install))
   #+end_src
+
 * smartparens
 
   https://github.com/Fuco1/smartparens
