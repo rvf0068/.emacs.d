@@ -222,20 +222,6 @@
   (use-package dired-x))
   #+END_SRC
 
-* eink
-
-  https://github.com/maio/eink-emacs
-
-  #+BEGIN_QUOTE
-  Low distraction, minimalistic color theme for Emacs emulating
-  reading on E Ink devices.
-  #+END_QUOTE
-
-  #+begin_src emacs-lisp
-(use-package zerodark-theme
-  :ensure t)
-  #+end_src
-
 * gap-mode                                                             :math:
 
   #+begin_src emacs-lisp
@@ -390,9 +376,15 @@
   :config (yas-global-mode))
   #+end_src
 
+* zerodark-theme
+
+  #+begin_src emacs-lisp
+(use-package zerodark-theme
+  :ensure t)
+  #+end_src
+
+
 
 * COMMENT Not for termux
-
-** ob-ipython
 
 ** sage-shell-mode
