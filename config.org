@@ -299,8 +299,9 @@
       :config
       (use-package htmlize
 	:ensure t)
-      (use-package ob-ipython
-	:ensure t)
+      (if (not termux-p)
+	  (use-package ob-ipython
+	    :ensure t))
       (use-package ob-sagemath
 	:ensure t)
       (use-package org-pomodoro
@@ -312,7 +313,7 @@
       (org-babel-do-load-languages
        'org-babel-load-languages
        '((python . t)
-         (ruby . t)
+	 (ruby . t)
 	 (latex . t)))
       (setq org-beamer-environments-extra
 	    '(("corollary"   "r" "\\begin{corollary}%a%U"   "\\end{corollary}")
