@@ -33,7 +33,7 @@
 
 (make-directory "~/backups/" t)
 
-(setq custom-file (concat default-directory "custom.el"))
+(setq custom-file (concat user-emacs-directory "custom.el"))
 
 (defun make-backup-file-name (file-name)
   "Create the non-numeric backup file name for `file-name'."
