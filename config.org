@@ -5,7 +5,6 @@
 #+latex_header: \lstset{style=source}
 #+latex_header: \usepackage[margin=2.5cm]{geometry}
 
-
 * init
 
   #+begin_src emacs-lisp
@@ -33,6 +32,8 @@
 	(load personal-el-file))))
 
 (make-directory "~/backups/" t)
+
+(setq custom-file (concat default-directory "custom.el"))
 
 (defun make-backup-file-name (file-name)
   "Create the non-numeric backup file name for `file-name'."
