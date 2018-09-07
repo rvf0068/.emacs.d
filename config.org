@@ -349,6 +349,8 @@ When called twice, replace the previously inserted \\(\\) by one $."
 (use-package yasnippet
   :ensure t
   :config (yas-global-mode))
+(use-package yasnippet-snippets
+  :ensure t)
   #+end_src
 
 * zerodark-theme
