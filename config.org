@@ -233,66 +233,66 @@
 * org
 
   #+begin_src emacs-lisp
-    (use-package org
-      :bind (("C-c a" . org-agenda)
-	     :map org-mode-map
-	     ("$". yf/org-electric-dollar))
-      :preface
-      ;; from Nicolas Richard <theonewiththeevillook@yahoo.fr>
-      ;; Date: Fri, 8 Mar 2013 16:23:02 +0100
-      ;; Message-ID: <87vc913oh5.fsf@yahoo.fr>
-      (defun yf/org-electric-dollar nil
-	"When called once, insert \\(\\) and leave point in between.
-    When called twice, replace the previously inserted \\(\\) by one $."
-	(interactive)
-	(if (and (looking-at "\\\\)") (looking-back "\\\\("))
-	    (progn (delete-char 2)
-		   (delete-char -2)
-		   (insert "$"))
-	  (insert "\\(\\)")
-	  (backward-char 2)))
-      ;; see https://lists.gnu.org/archive/html/emacs-orgmode/2015-09/msg00118.html
-      (defmacro by-backend (&rest body)
-	`(case org-export-current-backend ,@body))
-      (defun my-org-mode-hook ()
-	(turn-on-auto-revert-mode)
-	(turn-on-org-cdlatex))
-      :config
-      (use-package htmlize
-	:ensure t)
-      (if (not termux-p)
-	  (use-package ob-ipython
-	    :ensure t))
-      (use-package ob-sagemath
-	:ensure t)
-      (use-package org-pomodoro
-	:ensure t)
-      (use-package org-ref
-	:ensure t)
-      (use-package ox-ipynb
-	:load-path "ox-ipynb/")
-      (org-babel-do-load-languages
-       'org-babel-load-languages
-       '((python . t)
-	 (ruby . t)
-	 (latex . t)))
-      (setq org-beamer-environments-extra
-	    '(("corollary"   "r" "\\begin{corollary}%a%U"   "\\end{corollary}")
-	      ("lemma"       "l" "\\begin{lemma}%a%U"       "\\end{lemma}")
-	      ("proposition" "P" "\\begin{proposition}%a%U" "\\end{proposition}"))
-	    org-export-with-tags nil
-	    org-latex-listings t
-	    org-log-done 'note
-	    org-return-follows-link t
-	    org-src-fontify-natively t
-	    org-src-preserve-indentation t
-	    org-support-shift-select 'always)
-      (add-hook 'org-mode-hook #'my-org-mode-hook)
-      ;; when in :bind, these produce "Autoloading failed to define function"
-      (define-key org-mode-map (kbd "s-j") #'org-babel-next-src-block)
-      (define-key org-mode-map (kbd "s-k") #'org-babel-previous-src-block)
-      (define-key org-mode-map (kbd "s-l") #'org-edit-src-code)
-      (define-key org-src-mode-map (kbd "s-l") #'org-edit-src-exit))
+(use-package org
+  :bind (("C-c a" . org-agenda)
+	 :map org-mode-map
+	 ("$". yf/org-electric-dollar))
+  :preface
+  ;; from Nicolas Richard <theonewiththeevillook@yahoo.fr>
+  ;; Date: Fri, 8 Mar 2013 16:23:02 +0100
+  ;; Message-ID: <87vc913oh5.fsf@yahoo.fr>
+  (defun yf/org-electric-dollar nil
+    "When called once, insert \\(\\) and leave point in between.
+When called twice, replace the previously inserted \\(\\) by one $."
+    (interactive)
+    (if (and (looking-at "\\\\)") (looking-back "\\\\("))
+	(progn (delete-char 2)
+	       (delete-char -2)
+	       (insert "$"))
+      (insert "\\(\\)")
+      (backward-char 2)))
+  ;; see https://lists.gnu.org/archive/html/emacs-orgmode/2015-09/msg00118.html
+  (defmacro by-backend (&rest body)
+    `(case org-export-current-backend ,@body))
+  (defun my-org-mode-hook ()
+    (turn-on-auto-revert-mode)
+    (turn-on-org-cdlatex))
+  :config
+  (use-package htmlize
+    :ensure t)
+  (if (not termux-p)
+      (use-package ob-ipython
+	:ensure t))
+  (use-package ob-sagemath
+    :ensure t)
+  (use-package org-pomodoro
+    :ensure t)
+  (use-package org-ref
+    :ensure t)
+  (use-package ox-ipynb
+    :load-path "ox-ipynb/")
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (ruby . t)
+     (latex . t)))
+  (setq org-beamer-environments-extra
+	'(("corollary"   "r" "\\begin{corollary}%a%U"   "\\end{corollary}")
+	  ("lemma"       "l" "\\begin{lemma}%a%U"       "\\end{lemma}")
+	  ("proposition" "P" "\\begin{proposition}%a%U" "\\end{proposition}"))
+	org-export-with-tags nil
+	org-latex-listings t
+	org-log-done 'note
+	org-return-follows-link t
+	org-src-fontify-natively t
+	org-src-preserve-indentation t
+	org-support-shift-select 'always)
+  (add-hook 'org-mode-hook #'my-org-mode-hook)
+  ;; when in :bind, these produce "Autoloading failed to define function"
+  (define-key org-mode-map (kbd "s-j") #'org-babel-next-src-block)
+  (define-key org-mode-map (kbd "s-k") #'org-babel-previous-src-block)
+  (define-key org-mode-map (kbd "s-l") #'org-edit-src-code)
+  (define-key org-src-mode-map (kbd "s-l") #'org-edit-src-exit))
   #+end_src
 
 * smartparens
