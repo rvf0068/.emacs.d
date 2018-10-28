@@ -203,7 +203,9 @@
 (use-package elpy
   :ensure t
   :config
-  (elpy-enable))
+  (elpy-enable)
+  (setq python-shell-interpreter "ipython"
+	python-shell-interpreter-args "--i --simple-prompt"))
   #+end_src
 
 * gap-mode                                                             :math:
