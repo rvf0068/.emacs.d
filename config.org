@@ -293,6 +293,9 @@ When called twice, replace the previously inserted \\(\\) by one $."
 	  ("lemma"       "l" "\\begin{lemma}%a%U"       "\\end{lemma}")
 	  ("proposition" "P" "\\begin{proposition}%a%U" "\\end{proposition}"))
 	org-export-with-tags nil
+	org-file-apps
+	'((auto-mode . emacs)
+	  ("pdf" . "evince %s"))
 	org-highlight-latex-and-related '(latex)
 	org-latex-listings t
 	org-log-done 'note
