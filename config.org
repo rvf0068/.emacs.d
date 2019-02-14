@@ -56,6 +56,8 @@
 
 (display-time)
 
+(setq confirm-nonexistent-file-or-buffer nil)
+
 ;; from http://stackoverflow.com/a/9414763/577007
 (defun prelude-copy-file-name-to-clipboard ()
   "Copy the current buffer file name to the clipboard."
