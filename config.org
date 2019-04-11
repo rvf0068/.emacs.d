@@ -54,6 +54,13 @@
 (if (not termux-p)
       (display-battery-mode))
 
+(setq laboratorio-p (string-prefix-p "equipo" (system-name)))
+
+(if laboratorio-p
+    (progn
+      (org-defkey org-cdlatex-mode-map (kbd "/") #'cdlatex-math-symbol)
+      (setq cdlatex-math-symbol-prefix ?/)))
+
 (display-time)
 
 (setq confirm-nonexistent-file-or-buffer nil)
