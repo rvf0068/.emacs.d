@@ -195,7 +195,8 @@
 	(mapconcat #'expand-file-name file-list "\" \"")))))
   :config
   (setq dired-guess-shell-alist-user
-	'(("." "xdg-open" "termux-share")))
+	'(("." "xdg-open" "termux-share"))
+	dired-dwim-target t)
   (use-package dired-aux)
   (use-package dired-x))
   #+END_SRC
