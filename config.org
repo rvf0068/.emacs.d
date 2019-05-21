@@ -280,6 +280,7 @@ When called twice, replace the previously inserted \\(\\) by one $."
     (turn-on-auto-revert-mode)
     (turn-on-org-cdlatex))
   :config
+  (require 'ox-beamer)
   (use-package htmlize
     :ensure t)
   (if (not termux-p)
