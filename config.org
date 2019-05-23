@@ -281,6 +281,15 @@
   :bind ("C-c m" . magit-status))
   #+end_src
 
+* markdown-mode
+
+  https://jblevins.org/projects/markdown-mode/
+
+  #+begin_src emacs-lisp
+(use-package markdown-mode
+  :ensure t)
+  #+end_src
+
 * org
 
   #+begin_src emacs-lisp
