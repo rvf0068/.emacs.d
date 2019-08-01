@@ -377,7 +377,8 @@ When called twice, replace the previously inserted \\(\\) by one $."
   (show-smartparens-global-mode 1)
   (sp-local-pair 'org-mode "=" "="
 		 :unless '(sp-point-after-word-p sp-in-math-p)
-		 :post-handlers '(("[d1]" "SPC"))))
+		 :post-handlers '(("[d1]" "SPC")))
+  (sp-local-pair 'python-mode "``" "``"))
   #+end_src
 
 * smex
