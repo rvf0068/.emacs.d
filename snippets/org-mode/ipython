@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: ipython
+# key: ipy
+# --
+#+begin_src ipython :session $1
+$0
+#+end_src
