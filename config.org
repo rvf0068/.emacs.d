@@ -289,6 +289,16 @@
 (use-package markdown-mode
   :ensure t)
   #+end_src
+* move-text
+
+  https://github.com/emacsfodder/move-text
+
+  #+begin_src emacs-lisp
+(use-package move-text
+  :ensure t
+  :bind (([(super left)] . move-text-up)
+	 ([(super right)] . move-text-down)))
+  #+end_src
 
 * org
 
