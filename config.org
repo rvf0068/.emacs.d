@@ -121,6 +121,20 @@
 (use-package tex
   :ensure auctex
   :mode ("\\.tex\\'" . latex-mode)
+  :preface
+  (defun my-latex-config ()
+      (TeX-add-symbols '("emph" 1))
+      (LaTeX-add-environments '("definition")
+  			  '("theorem")
+  			  '("lemma")
+  			  '("corollary")
+  			  '("definicion")
+  			  '("teorema")
+  			  '("lema")
+  			  '("corolario"))
+      (TeX-run-style-hooks "tikz")
+      (TeX-run-style-hooks "tkz-graph")
+      (TeX-run-style-hooks "tkz-berge"))
   :config
   (setq TeX-auto-save t
 	TeX-electric-escape t
@@ -128,6 +142,7 @@
 	TeX-parse-self t
 	TeX-save-query nil)
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  (add-hook 'LaTeX-mode-hook 'my-latex-config)
   (setq reftex-plug-into-AUCTeX t
 	reftex-use-external-file-finders t))
   #+end_src
