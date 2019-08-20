@@ -79,15 +79,15 @@
 
 (defun TeX-arg-tkz-berge-edge (optional &optional prompt)
   "Prompt for endpoints of an edge."
-  (let ((from (read-input "From: "))
-        (endpoint (read-input "To: ")))
+  (let ((from (read-string "From: "))
+        (endpoint (read-string "To: ")))
     (insert "(" from ")")
     (insert "(" endpoint ")")
     (indent-according-to-mode)))
 
 (defun TeX-arg-tkz-berge-style-vertex (optional &optional prompt)
   "Prompt for endpoints of an edge."
-  (let ((style (read-input "Style: ")))
+  (let ((style (read-string "Style: ")))
     (insert "[vstyle=" style "]")
     (indent-according-to-mode)))
 
