@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: ipython
+# name: ipython block
 # key: ipy
 # --
 #+begin_src ipython :session $1
