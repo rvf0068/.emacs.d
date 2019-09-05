@@ -388,6 +388,19 @@ When called twice, replace the previously inserted \\(\\) by one $."
   (define-key org-src-mode-map (kbd "s-l") #'org-edit-src-exit))
   #+end_src
 
+* sage-shell-mode
+
+  https://github.com/sagemath/sage-shell-mode
+
+  #+begin_quote
+  Emacs front end for SageMath
+  #+end_quote
+
+  #+begin_src emacs-lisp
+(use-package sage-shell-mode
+  :ensure t)
+  #+end_src
+
 * smartparens
 
   https://github.com/Fuco1/smartparens
