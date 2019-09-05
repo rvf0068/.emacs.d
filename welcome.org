@@ -60,4 +60,5 @@
 
 # Local Variables:
 # org-hide-emphasis-markers: t
+# buffer-read-only: t
 # End:
