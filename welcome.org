@@ -1,1 +1,63 @@
+#+title: Emacs para estudiantes de matemáticas
+
+#+startup: showall
+
 * Bienvenidos a Emacs
+
+  [[https://www.gnu.org/software/emacs/][Emacs]] es un editor de texto muy versátil. Tiene diferentes /modos/,
+  que sirven para editar diferentes tipos de archivos. Hay varias
+  acciones que se ejecutan por medio de atajos de teclado. En los
+  atajos de teclado, la tecla =Control= se escribe como =C= y la tecla
+  =Alt= se escribe como =M=.
+
+* Comandos básicos
+
+  | =C-g=     | Interrumpir un comando                 |
+  | =C-x C-f= | Abrir (crear) un archivo               |
+  | =C-x C-s= | Guardar un archivo                     |
+  | =C-x C-w= | Guardar un archivo con nombre distinto |
+  | =C-x C-c= | Salir de Emacs                         |
+  | =C-x b=   | Cambiar de buffer                      |
+  | =C-x 2=   | Dividir la ventana                     |
+  | =C-x 1=   | Regresar a una sola ventana            |
+  | =M-w=     | Copiar                                 |
+  | =C-w=     | Cortar                                 |
+  | =C-y=     | Pegar                                  |
+  | =C-x h=   | Seleccionar todo                       |
+  | =C-s=     | Buscar hacia adelante                  |
+  | =C-r=     | Buscar hacia atrás                     |
+  | =M-%=     | Buscar y reemplazar                    |
+  | =C-x u=   | Deshacer (=undo=)                        |
+  | =C-x k=   | =kill-buffer=                            |
+  | =C-c ;=   | Comentar región                        |
+  | =M-q=     | Justificar párrafo (=fill-paragraph=)    |
+  | =M-/=     | =dabbrev-expand=                         |
+  | =M-$=     | Checar palabra (=ispell-word=)           |
+  | =C-x d=   | Navegador de directorios               |
+  | =C-c m=   | Magit (Interfase de git)               |
+
+* Comandos con nombre
+
+  | =M-x ispell-change-dictionary= |
+  | =M-x ispell-buffer=            |
+  | =M-x calendar=                 |
+  | =M-x calculator=               |
+  | =M-x dired=                    |
+  | =M-x ediff-buffers=            |
+  | =M-x rgrep=                    |
+  | =M-x snake=                    |
+  | =M-x tetris=                   |
+
+* Comandos en modo LaTeX
+
+  | =C-c C-c=            | Compilar, abrir pdf          |
+  | =M-x TeX-next-error= | Mostrar error en compilación |
+  | =C-c C-e=            | Iniciar nuevo ambiente       |
+
+* Comandos en modo Python
+
+  | =C-c C-c= | Ejecutar código |
+
+# Local Variables:
+# org-hide-emphasis-markers: t
+# End:
