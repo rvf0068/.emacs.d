@@ -51,7 +51,7 @@
 (column-number-mode t)
 
 (setq termux-p
-      (string-equal system-configuration "arm-unknown-linux-androideabi"))
+      (string-suffix-p "linux-android" system-configuration))
 
 (if (not termux-p)
       (display-battery-mode))
