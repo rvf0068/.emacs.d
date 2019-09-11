@@ -56,6 +56,12 @@
 (if (not termux-p)
       (display-battery-mode))
 
+(setq windows-p
+      (string-suffix-p "mingw32" system-configuration))
+
+(if windows-p
+    (set-language-environment "UTF-8"))
+
 (setq laboratorio-p (string-prefix-p "equipo" (system-name)))
 
 (if laboratorio-p
