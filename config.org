@@ -75,6 +75,8 @@
 
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 
+(setq mouse-drag-copy-region t)
+
 ;; from http://stackoverflow.com/a/9414763/577007
 (defun prelude-copy-file-name-to-clipboard ()
   "Copy the current buffer file name to the clipboard."
