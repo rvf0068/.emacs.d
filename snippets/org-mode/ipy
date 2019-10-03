@@ -2,6 +2,6 @@
 # name: ipython block
 # key: ipy
 # --
-#+begin_src ipython :session $1 :results raw drawer
+#+begin_src ipython
 $0
 #+end_src

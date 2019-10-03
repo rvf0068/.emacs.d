@@ -9,5 +9,5 @@ $0
 #+end_src
    
 #+attr_html: :width 400 :alt $1 :align center
-#+attr_latex: :float t :width 7cm
+#+attr_latex: :float t :width ""
 #+results: $1
