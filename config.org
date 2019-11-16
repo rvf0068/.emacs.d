@@ -51,10 +51,11 @@
 (column-number-mode t)
 
 (setq termux-p
-      (string-suffix-p "linux-android" system-configuration))
+      (or (string-suffix-p "linux-android" system-configuration)
+	  (string-prefix-p "arm-unknown-linux" system-configuration)))
 
 (if (not termux-p)
-      (display-battery-mode))
+    (display-battery-mode))
 
 (setq windows-p
       (string-suffix-p "mingw32" system-configuration))
