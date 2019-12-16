@@ -4,7 +4,7 @@
 # --
 #+name: $1
 #+header: :file (by-backend (latex "$1.tikz") (beamer "$1.tikz") (t "$1.png"))
-#+begin_src latex :results raw file
+#+begin_src latex
 $0
 #+end_src
    
