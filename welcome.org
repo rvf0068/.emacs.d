@@ -18,7 +18,8 @@
   | =C-x C-w= | Guardar un archivo con nombre distinto |
   | =C-x C-c= | Salir de Emacs                         |
   | =C-x b=   | Cambiar de buffer                      |
-  | =C-x 2=   | Dividir la ventana                     |
+  | =C-x 2=   | Dividir la ventana horizontalmente     |
+  | =C-x 3=   | Dividir la ventana verticalmente       |
   | =C-x 1=   | Regresar a una sola ventana            |
   | =M-w=     | Copiar                                 |
   | =C-w=     | Cortar                                 |
