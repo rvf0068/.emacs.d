@@ -300,7 +300,10 @@
 
   #+begin_src emacs-lisp
 (use-package helm
-  :ensure t)
+  :ensure t
+  :config
+  (use-package helm-unicode
+    :ensure t))
   #+end_src
 
 * ido
