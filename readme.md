@@ -4,6 +4,4 @@
 
 Clone this with
 
-#+begin_center
-=git clone --recursive https://github.com/rvf0068/.emacs.d.git=
-#+end_center
+`git clone --recursive https://github.com/rvf0068/.emacs.d.git`
