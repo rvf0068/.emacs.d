@@ -378,7 +378,11 @@ When called twice, replace the previously inserted \\(\\) by one $."
   (use-package ob-sagemath
     :ensure t)
   (use-package org-pomodoro
-    :ensure t)
+    :ensure t
+    :commands (org-pomodoro)
+    :config
+    (setq alert-user-configuration
+	  (quote ((((:category . "org-pomodoro")) libnotify nil)))))
   (use-package org-ref
     :ensure t)
   (use-package ox-ipynb
