@@ -269,9 +269,10 @@
 * doom-modeline
 
   #+begin_src emacs-lisp
-(use-package doom-modeline
-  :ensure t
-  :config (doom-modeline-mode))
+(if (not termux-p)
+    (use-package doom-modeline
+      :ensure t
+      :config (doom-modeline-mode)))
   #+end_src
 
 * elpy
