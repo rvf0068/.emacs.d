@@ -19,3 +19,6 @@ games/
 /bookmarks
 transient/
 /custom.el
+/elpy/
+/newsticker/
+/recentf
