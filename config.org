@@ -190,36 +190,33 @@
   #+begin_src emacs-lisp
 (use-package cdlatex
   :ensure t
-  :config
-  (setq cdlatex-math-symbol-alist
-	'(( ?c   ("\\colon"))
-	  ( ?m   ("\\mu" "\\mapsto"))
-	  ( ?p   ("\\pi" "\\varpi" "\\perp"))
-	  ( ?O   ("\\Omega" "\\mathrm{Orb}"))
-	  ( ?S   ("\\Sigma" "\\mathrm{Stab}"))
-	  ( ?-   ("\\cap" "\\leftrightarrow" "\\longleftrightarrow"))
-	  ( ?.   ("\\ldots" "\\cdots" "\\cdot"))
-	  ( ?<   ("\\leq" "\\langle"))
-	  ( ?>   ("\\geq" "\\rangle"))
-	  ( 123  ("\\{ \\}"))
-	  ( 125  ("\\subseteq"))
-	  ( ?\[  ("\\subseteq"))))
-
-  (setq cdlatex-math-modify-alist
-      '(( ?B "\\mathbb"         nil t nil nil)
-	( ?a "\\overrightarrow" nil t nil nil)))
-
-  (setq cdlatex-command-alist
-      '(("bin"  "Insert \\binom{}{}"
-	 "\\binom{?}{}"       cdlatex-position-cursor nil nil t)
-	("norm" "Insert \\Vert \\Vert"
-	 "\\Vert ?\\Vert"     cdlatex-position-cursor nil nil t)
-	("gen"  "Insert \\langle \\rangle"
-	 "\\langle ?\\rangle" cdlatex-position-cursor nil nil t)
-	("set"  "Insert a set"
-	 "\\{?\\mid \\}"      cdlatex-position-cursor nil nil t)))
-
-  (setq cdlatex-simplify-sub-super-scripts nil))
+  :custom
+  (cdlatex-math-symbol-alist
+   '(( ?c   ("\\colon"))
+     ( ?m   ("\\mu" "\\mapsto"))
+     ( ?p   ("\\pi" "\\varpi" "\\perp"))
+     ( ?O   ("\\Omega" "\\mathrm{Orb}"))
+     ( ?S   ("\\Sigma" "\\mathrm{Stab}"))
+     ( ?-   ("\\cap" "\\leftrightarrow" "\\longleftrightarrow"))
+     ( ?.   ("\\ldots" "\\cdots" "\\cdot"))
+     ( ?<   ("\\leq" "\\langle"))
+     ( ?>   ("\\geq" "\\rangle"))
+     ( 123  ("\\{ \\}"))
+     ( 125  ("\\subseteq"))
+     ( ?\[  ("\\subseteq"))))
+  (cdlatex-math-modify-alist
+   '(( ?B "\\mathbb"         nil t nil nil)
+     ( ?a "\\overrightarrow" nil t nil nil)))
+  (cdlatex-command-alist
+   '(("bin"  "Insert \\binom{}{}"
+      "\\binom{?}{}"       cdlatex-position-cursor nil nil t)
+     ("norm" "Insert \\Vert \\Vert"
+      "\\Vert ?\\Vert"     cdlatex-position-cursor nil nil t)
+     ("gen"  "Insert \\langle \\rangle"
+      "\\langle ?\\rangle" cdlatex-position-cursor nil nil t)
+     ("set"  "Insert a set"
+      "\\{?\\mid \\}"      cdlatex-position-cursor nil nil t)))
+  (cdlatex-simplify-sub-super-scripts nil))
   #+end_src
 
 * dired
@@ -237,7 +234,7 @@
 (use-package dired
   :bind (:map dired-mode-map
 	      ("r". dired-start-process))
-  :preface
+  :init
   ;; see https://oremacs.com/2015/01/04/dired-nohup/
   (defun dired-start-process (cmd &optional file-list)
     (interactive
@@ -259,32 +256,38 @@
 	    (format "%s %s" cmd list-switch)
 	  cmd)
 	(mapconcat #'expand-file-name file-list "\" \"")))))
+  :custom
+  ;; these are the commands that dired will run when pressed "!"
+  ;; we can cycle with "M-n", "M-p"
+  ;; since there is a "." (regexp), this will work for all file types
+  (dired-guess-shell-alist-user
+	'(("." "xdg-open" "termux-share")))
+  (dired-dwim-target t)
   :config
-  (setq dired-guess-shell-alist-user
-	'(("." "xdg-open" "termux-share"))
-	dired-dwim-target t)
+  ;; both dired-aux and dired-x come with emacs
   (use-package dired-aux)
   (use-package dired-x))
   #+END_SRC
 
 * doom-modeline
 
-  Only one oftwo methods from
+  Only one of two methods from
   https://github.com/seagle0128/doom-modeline/issues/187 sort of
   worked to make modeline smaller.
 
   #+begin_src emacs-lisp
-(if (not termux-p)
-    (use-package doom-modeline
-      :ensure t
-      :config
-      (doom-modeline-mode)
-      (setq doom-modeline-height 5)))
-
-(defun my-doom-modeline--font-height ()
-  "Calculate the actual char height of the mode-line."
-  (+ (frame-char-height) 1))
-(advice-add #'doom-modeline--font-height :override #'my-doom-modeline--font-height)
+(use-package doom-modeline
+  :if window-system
+  :ensure t
+  :custom
+  (doom-modeline-height 5)
+  :config
+  (doom-modeline-mode)
+  (defun my-doom-modeline--font-height ()
+    "Calculate the actual char height of the mode-line."
+    (+ (frame-char-height) 1))
+  (advice-add #'doom-modeline--font-height
+	      :override #'my-doom-modeline--font-height))
   #+end_src
 
 * elpy
@@ -294,8 +297,9 @@
   :ensure t
   :config
   (elpy-enable)
-  (setq python-shell-interpreter "ipython"
-	python-shell-interpreter-args "--i --simple-prompt"))
+  :custom
+  (python-shell-interpreter "ipython")
+  (python-shell-interpreter-args "--i --simple-prompt"))
   #+end_src
 
 * gap-mode                                                             :math:
@@ -303,9 +307,9 @@
   #+begin_src emacs-lisp
 (use-package gap-mode
   :ensure t
-  :config
-  (setq gap-executable "gap"
-	gap-start-options  '("-E" "-f" "-b" "-m" "1024m")))
+  :custom
+  (gap-executable "gap")
+  (gap-start-options  '("-E" "-f" "-b" "-m" "1024m")))
   #+end_src
 
 * helm
@@ -342,6 +346,7 @@
 (use-package markdown-mode
   :ensure t)
   #+end_src
+
 * move-text
 
   https://github.com/emacsfodder/move-text
@@ -359,8 +364,13 @@
 (use-package org
   :bind (("C-c a" . org-agenda)
 	 :map org-mode-map
-	 ("$". yf/org-electric-dollar))
-  :preface
+	 ("$". yf/org-electric-dollar)
+	 ([?\s-j] . org-babel-next-src-block)
+	 ([?\s-k] . org-babel-previous-src-block)
+	 ([?\s-l] . org-edit-src-code)
+	 :map org-src-mode-map
+	 ([?\s-l] . org-edit-src-exit))
+  :init
   ;; from Nicolas Richard <theonewiththeevillook@yahoo.fr>
   ;; Date: Fri, 8 Mar 2013 16:23:02 +0100
   ;; Message-ID: <87vc913oh5.fsf@yahoo.fr>
@@ -384,50 +394,46 @@ When called twice, replace the previously inserted \\(\\) by one $."
   (require 'ox-beamer)
   (use-package htmlize
     :ensure t)
-  (if (not termux-p)
-      (use-package ob-ipython
-	:ensure t))
+  (use-package ob-ipython
+    :if window-system
+    :ensure t)
   (use-package ob-sagemath
     :ensure t)
   (use-package org-pomodoro
     :ensure t
     :commands (org-pomodoro)
-    :config
-    (setq alert-user-configuration
-	  (quote ((((:category . "org-pomodoro")) libnotify nil)))
-	  org-pomodoro-long-break-length 15))
+    :custom
+    (alert-user-configuration
+     (quote ((((:category . "org-pomodoro")) libnotify nil))))
+    (org-pomodoro-long-break-length 15))
   (use-package org-ref
     :ensure t
-    :config
-    (setq org-ref-completion-library 'org-ref-helm-bibtex))
+    :custom
+    (org-ref-completion-library 'org-ref-helm-bibtex))
   (use-package ox-ipynb
     :load-path "ox-ipynb/")
+  :custom
+  (org-beamer-environments-extra
+	'(("corollary"   "r" "\\begin{corollary}%a%U"   "\\end{corollary}")
+	  ("lemma"       "l" "\\begin{lemma}%a%U"       "\\end{lemma}")
+	  ("proposition" "P" "\\begin{proposition}%a%U" "\\end{proposition}")))
+  (org-export-with-tags nil)
+  (org-file-apps
+   '((auto-mode . emacs)
+     ("pdf" . "evince %s")))
+  (org-highlight-latex-and-related '(latex))
+  (org-latex-listings t)
+  (org-log-done 'note)
+  (org-return-follows-link t)
+  (org-src-preserve-indentation t)
+  (org-support-shift-select 'always)
+  :config
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((python . t)
      (ruby . t)
      (latex . t)))
-  (setq org-beamer-environments-extra
-	'(("corollary"   "r" "\\begin{corollary}%a%U"   "\\end{corollary}")
-	  ("lemma"       "l" "\\begin{lemma}%a%U"       "\\end{lemma}")
-	  ("proposition" "P" "\\begin{proposition}%a%U" "\\end{proposition}"))
-	org-export-with-tags nil
-	org-file-apps
-	'((auto-mode . emacs)
-	  ("pdf" . "evince %s"))
-	org-highlight-latex-and-related '(latex)
-	org-latex-listings t
-	org-log-done 'note
-	org-return-follows-link t
-	org-src-fontify-natively t
-	org-src-preserve-indentation t
-	org-support-shift-select 'always)
-  (add-hook 'org-mode-hook #'my-org-mode-hook)
-  ;; when in :bind, these produce "Autoloading failed to define function"
-  (define-key org-mode-map (kbd "s-j") #'org-babel-next-src-block)
-  (define-key org-mode-map (kbd "s-k") #'org-babel-previous-src-block)
-  (define-key org-mode-map (kbd "s-l") #'org-edit-src-code)
-  (define-key org-src-mode-map (kbd "s-l") #'org-edit-src-exit))
+  (add-hook 'org-mode-hook 'my-org-mode-hook))
   #+end_src
 
 * sage-shell-mode
