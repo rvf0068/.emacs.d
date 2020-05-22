@@ -393,7 +393,8 @@ When called twice, replace the previously inserted \\(\\) by one $."
     :commands (org-pomodoro)
     :config
     (setq alert-user-configuration
-	  (quote ((((:category . "org-pomodoro")) libnotify nil)))))
+	  (quote ((((:category . "org-pomodoro")) libnotify nil)))
+	  org-pomodoro-long-break-length 15))
   (use-package org-ref
     :ensure t
     :config
