@@ -365,6 +365,7 @@
 
   #+begin_src emacs-lisp
 (use-package org
+  :ensure org-plus-contrib
   :bind (("C-c a" . org-agenda)
 	 :map org-mode-map
 	 ("$". yf/org-electric-dollar)
