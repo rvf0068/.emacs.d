@@ -157,9 +157,9 @@
   (TeX-save-query nil)
   (reftex-plug-into-AUCTeX t)
   (reftex-use-external-file-finders t)
-  :config
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-  (add-hook 'LaTeX-mode-hook 'my-latex-config))
+  :hook
+  (LaTeX-mode . my-latex-config)
+  (LaTeX-mode . turn-on-reftex))
   #+end_src
 
 * bibretrieve
@@ -436,7 +436,8 @@ When called twice, replace the previously inserted \\(\\) by one $."
    '((python . t)
      (ruby . t)
      (latex . t)))
-  (add-hook 'org-mode-hook 'my-org-mode-hook))
+  :hook
+  (org-mode . my-org-mode-hook))
   #+end_src
 
 * sage-shell-mode
