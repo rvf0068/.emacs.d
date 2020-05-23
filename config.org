@@ -33,11 +33,6 @@
 
 (make-directory "~/backups/" t)
 
-(setq custom-file (concat user-emacs-directory "custom.el"))
-(load custom-file 'noerror)
-
-(setq initial-buffer-choice (expand-file-name "welcome.org" my-emacs-dir))
-
 (defun make-backup-file-name (file-name)
   "Create the non-numeric backup file name for `file-name'."
   (require 'dired)
@@ -46,24 +41,28 @@
               (dired-replace-in-string "/" "-" file-name))
     (concat file-name "~")))
 
-(setq-default abbrev-mode t)
+(setq abbrev-mode t
+      confirm-nonexistent-file-or-buffer nil
+      custom-file (concat user-emacs-directory "custom.el")
+      initial-buffer-choice (expand-file-name "welcome.org" my-emacs-dir)
+      frame-title-format "%b: %+%+ %f"
+      laboratorio-p (string-prefix-p "equipo" (system-name))
+      mouse-drag-copy-region t
+      termux-p
+      (or (string-suffix-p "linux-android" system-configuration)
+	  (string-prefix-p "arm-unknown-linux" system-configuration))
+      windows-p
+      (string-suffix-p "mingw32" system-configuration))
+
+(load custom-file 'noerror)
 
 (column-number-mode t)
-
-(setq termux-p
-      (or (string-suffix-p "linux-android" system-configuration)
-	  (string-prefix-p "arm-unknown-linux" system-configuration)))
 
 (if (not termux-p)
     (display-battery-mode))
 
-(setq windows-p
-      (string-suffix-p "mingw32" system-configuration))
-
 (if windows-p
     (set-language-environment "UTF-8"))
-
-(setq laboratorio-p (string-prefix-p "equipo" (system-name)))
 
 (if laboratorio-p
     (progn
@@ -72,11 +71,7 @@
 
 (display-time)
 
-(setq confirm-nonexistent-file-or-buffer nil)
-
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
-
-(setq mouse-drag-copy-region t)
 
 ;; from http://stackoverflow.com/a/9414763/577007
 (defun prelude-copy-file-name-to-clipboard ()
@@ -277,6 +272,7 @@
 
   #+begin_src emacs-lisp
 (use-package doom-modeline
+  :disabled
   :if window-system
   :ensure t
   :custom
@@ -361,14 +357,15 @@
 	 ([(super right)] . move-text-down)))
   #+end_src
 
-* org
+* org-mode
 
   #+begin_src emacs-lisp
 (use-package org
   :ensure org-plus-contrib
   :bind (("C-c a" . org-agenda)
 	 :map org-mode-map
-	 ("$". yf/org-electric-dollar)
+	 ("$" . yf/org-electric-dollar)
+	 ("|" . org-absolute-value)
 	 ([?\s-j] . org-babel-next-src-block)
 	 ([?\s-k] . org-babel-previous-src-block)
 	 ([?\s-l] . org-edit-src-code)
@@ -391,6 +388,22 @@ When called twice, replace the previously inserted \\(\\) by one $."
   ;; see https://lists.gnu.org/archive/html/emacs-orgmode/2015-09/msg00118.html
   (defmacro by-backend (&rest body)
     `(case org-export-current-backend ,@body))
+  ;; see http://endlessparentheses.com/ispell-and-org-mode.html
+  (defun endless/org-ispell ()
+    "Configure `ispell-skip-region-alist' for `org-mode'."
+    (make-local-variable 'ispell-skip-region-alist)
+    (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
+    (add-to-list 'ispell-skip-region-alist '("~" "~"))
+    (add-to-list 'ispell-skip-region-alist '("=" "="))
+    (add-to-list 'ispell-skip-region-alist '("^#\\+begin_src" . "^#\\+end_src")))
+  (defun org-absolute-value ()
+    "Insert || and leave point inside when pressing |"
+    (interactive)
+    (if (org-inside-LaTeX-fragment-p)
+	(progn
+	  (insert "||")
+	  (backward-char 1))
+      (insert "|")))
   (defun my-org-mode-hook ()
     (turn-on-auto-revert-mode)
     (turn-on-org-cdlatex))
@@ -409,6 +422,7 @@ When called twice, replace the previously inserted \\(\\) by one $."
     :custom
     (alert-user-configuration
      (quote ((((:category . "org-pomodoro")) libnotify nil))))
+    (org-pomodoro-keep-killed-pomodoro-time t)
     (org-pomodoro-long-break-length 15))
   (use-package org-ref
     :ensure t
@@ -438,7 +452,9 @@ When called twice, replace the previously inserted \\(\\) by one $."
      (ruby . t)
      (latex . t)))
   :hook
-  (org-mode . my-org-mode-hook))
+  (org-mode . my-org-mode-hook)
+  (org-mode . endless/org-ispell)
+  (org-babel-after-execute . org-redisplay-inline-images))
   #+end_src
 
 * sage-shell-mode
