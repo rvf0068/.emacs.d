@@ -314,9 +314,12 @@
 
 * helm
 
+  Many =helm= commands have a prefix =C-x c=
+
   #+begin_src emacs-lisp
 (use-package helm
   :ensure t
+  :bind ("M-x" . helm-M-x)
   :config
   (use-package helm-unicode
     :ensure t))
@@ -482,6 +485,7 @@ When called twice, replace the previously inserted \\(\\) by one $."
 
   #+begin_src emacs-lisp
 (use-package smex
+  :disabled
   :ensure t
   :bind ("M-x" . smex)
   :config (smex-initialize))
