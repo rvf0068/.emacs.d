@@ -320,6 +320,21 @@
   (use-package helm-unicode
     :ensure t))
   #+end_src
+* helpful
+
+  Helpful is an alternative to the built-in Emacs help that provides
+  much more contextual information. https://github.com/Wilfred/helpful
+
+  #+begin_src emacs-lisp
+(use-package helpful
+  :ensure t
+  :bind 
+  ("C-h C" . helpful-command) 
+  ("C-h f" . helpful-callable) 
+  ("C-h F" . helpful-function) 
+  ("C-h k" . helpful-key) 
+  ("C-h v" . helpful-variable))
+  #+end_src
 
 * ido
 
