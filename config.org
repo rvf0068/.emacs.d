@@ -298,6 +298,14 @@
   (python-shell-interpreter-args "--i --simple-prompt"))
   #+end_src
 
+* flyspell
+
+  #+begin_src emacs-lisp
+(use-package flyspell
+  :init
+  (flyspell-mode 1))
+  #+end_src
+
 * gap-mode                                                             :math:
 
   #+begin_src emacs-lisp
