@@ -378,6 +378,8 @@
 (use-package org
   :ensure org-plus-contrib
   :bind (("C-c a" . org-agenda)
+	 ("C-c c" . org-capture)
+	 ("C-c l" . org-store-link)
 	 :map org-mode-map
 	 ("$" . yf/org-electric-dollar)
 	 ("|" . org-absolute-value)
