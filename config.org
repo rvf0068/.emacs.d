@@ -129,6 +129,7 @@
 (use-package tex
   :ensure auctex
   :mode ("\\.tex\\'" . latex-mode)
+  :mode ("\\.tikz\\'" . latex-mode)
   :init
   (defun my-latex-config ()
     (LaTeX-math-mode)
