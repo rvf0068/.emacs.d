@@ -2,7 +2,7 @@
 # name: theorem
 # key: the
 # --
-*** Theorem                                                 :B_theorem:
+*** Theorem                                                       :B_theorem:
     :PROPERTIES:
     :BEAMER_env: theorem
     :CUSTOM_ID: theorem-$1
