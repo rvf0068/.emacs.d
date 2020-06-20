@@ -479,7 +479,8 @@ When called twice, replace the previously inserted \\(\\) by one $."
     :load-path "ox-ipynb/")
   :custom
   (org-beamer-environments-extra
-	'(("corollary"   "r" "\\begin{corollary}%a%U"   "\\end{corollary}")
+	'(("conjecture"   "j" "\\begin{conjecture}%a%U"   "\\end{conjecture}")
+	  ("corollary"   "r" "\\begin{corollary}%a%U"   "\\end{corollary}")
 	  ("lemma"       "l" "\\begin{lemma}%a%U"       "\\end{lemma}")
 	  ("proposition" "P" "\\begin{proposition}%a%U" "\\end{proposition}")))
   (org-export-with-tags nil)
@@ -495,9 +496,10 @@ When called twice, replace the previously inserted \\(\\) by one $."
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((python . t)
-     (ruby . t)
-     (latex . t)))
+   '((dot .t)
+     (latex . t)
+     (python . t)
+     (ruby . t)))
   :hook
   (org-mode . my-org-mode-hook)
   (org-mode . endless/org-ispell)
