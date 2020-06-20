@@ -319,8 +319,11 @@
 
   #+begin_src emacs-lisp
 (use-package flyspell
-  :init
-  (flyspell-mode 1))
+  :ensure t
+  :defer t
+  :hook
+  (prog-mode . flyspell-prog-mode)
+  (text-mode . flyspell-mode))
   #+end_src
 
 * gap-mode                                                             :math:
