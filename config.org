@@ -461,6 +461,8 @@ When called twice, replace the previously inserted \\(\\) by one $."
     :ensure t)
   (use-package ob-sagemath
     :ensure t)
+  (use-package org-mime
+    :ensure t)
   (use-package org-pomodoro
     :ensure t
     :commands (org-pomodoro)
