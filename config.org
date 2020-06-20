@@ -41,8 +41,7 @@
               (dired-replace-in-string "/" "-" file-name))
     (concat file-name "~")))
 
-(setq abbrev-mode t
-      confirm-nonexistent-file-or-buffer nil
+(setq confirm-nonexistent-file-or-buffer nil
       custom-file (concat user-emacs-directory "custom.el")
       initial-buffer-choice (expand-file-name "welcome.org" my-emacs-dir)
       frame-title-format "%b: %+%+ %f"
@@ -57,6 +56,8 @@
 (load custom-file 'noerror)
 
 (column-number-mode t)
+
+(abbrev-mode 1)
 
 (if (not termux-p)
     (display-battery-mode))
@@ -112,6 +113,14 @@
 
 (global-set-key [(super down)] 'duplicate-line-forward)
 (global-set-key [(super up)] 'duplicate-line-backward)
+  #+end_src
+
+* abbrev
+
+  #+begin_src emacs-lisp
+(use-package abbrev
+  :hook
+  (text-mode . abbrev-mode))
   #+end_src
 
 * auctex                                                               :math:
