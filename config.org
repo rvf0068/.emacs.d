@@ -289,11 +289,11 @@
 
   #+begin_src emacs-lisp
 (use-package doom-modeline
-  :disabled
   :if window-system
   :ensure t
   :custom
   (doom-modeline-height 5)
+  (doom-modeline-buffer-file-name-style 'truncate-all)
   :config
   (doom-modeline-mode)
   (defun my-doom-modeline--font-height ()
