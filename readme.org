@@ -1,5 +1,0 @@
-Clone this with
-
-#+BEGIN_CENTER
-=git clone --recursive https://github.com/rvf0068/new-emacs.d.git .emacs.d=
-#+END_CENTER

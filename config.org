@@ -33,9 +33,6 @@
 
 (make-directory "~/backups/" t)
 
-(setq custom-file (concat user-emacs-directory "custom.el"))
-(load custom-file 'noerror)
-
 (defun make-backup-file-name (file-name)
   "Create the non-numeric backup file name for `file-name'."
   (require 'dired)
@@ -44,17 +41,29 @@
               (dired-replace-in-string "/" "-" file-name))
     (concat file-name "~")))
 
-(setq-default abbrev-mode t)
+(setq confirm-nonexistent-file-or-buffer nil
+      custom-file (concat user-emacs-directory "custom.el")
+      initial-buffer-choice (expand-file-name "welcome.org" my-emacs-dir)
+      frame-title-format "%b: %+%+ %f"
+      laboratorio-p (string-prefix-p "equipo" (system-name))
+      mouse-drag-copy-region t
+      termux-p
+      (or (string-suffix-p "linux-android" system-configuration)
+	  (string-prefix-p "arm-unknown-linux" system-configuration))
+      windows-p
+      (string-suffix-p "mingw32" system-configuration))
+
+(load custom-file 'noerror)
 
 (column-number-mode t)
 
-(setq termux-p
-      (string-equal system-configuration "arm-unknown-linux-androideabi"))
+(abbrev-mode 1)
 
 (if (not termux-p)
-      (display-battery-mode))
+    (display-battery-mode))
 
-(setq laboratorio-p (string-prefix-p "equipo" (system-name)))
+(if windows-p
+    (set-language-environment "UTF-8"))
 
 (if laboratorio-p
     (progn
@@ -63,7 +72,7 @@
 
 (display-time)
 
-(setq confirm-nonexistent-file-or-buffer nil)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;; from http://stackoverflow.com/a/9414763/577007
 (defun prelude-copy-file-name-to-clipboard ()
@@ -106,6 +115,14 @@
 (global-set-key [(super up)] 'duplicate-line-backward)
   #+end_src
 
+* abbrev
+
+  #+begin_src emacs-lisp
+(use-package abbrev
+  :hook
+  (text-mode . abbrev-mode))
+  #+end_src
+
 * auctex                                                               :math:
 
   https://www.gnu.org/software/auctex/
@@ -121,15 +138,33 @@
 (use-package tex
   :ensure auctex
   :mode ("\\.tex\\'" . latex-mode)
-  :config
-  (setq TeX-auto-save t
-	TeX-electric-escape t
-	TeX-insert-braces nil
-	TeX-parse-self t
-	TeX-save-query nil)
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-  (setq reftex-plug-into-AUCTeX t
-	reftex-use-external-file-finders t))
+  :mode ("\\.tikz\\'" . latex-mode)
+  :init
+  (defun my-latex-config ()
+    (LaTeX-math-mode)
+    (TeX-add-symbols '("emph" 1))
+    (LaTeX-add-environments '("definition")
+			    '("theorem")
+			    '("lemma")
+			    '("corollary")
+			    '("definicion")
+			    '("teorema")
+			    '("lema")
+			    '("corolario"))
+    (TeX-run-style-hooks "tikz")
+    (TeX-run-style-hooks "tkz-graph")
+    (TeX-run-style-hooks "tkz-berge"))
+  :custom
+  (TeX-auto-save t)
+  (TeX-electric-escape t)
+  (TeX-insert-braces nil)
+  (TeX-parse-self t)
+  (TeX-save-query nil)
+  (reftex-plug-into-AUCTeX t)
+  (reftex-use-external-file-finders t)
+  :hook
+  (LaTeX-mode . my-latex-config)
+  (LaTeX-mode . turn-on-reftex))
   #+end_src
 
 * bibretrieve
@@ -160,36 +195,33 @@
   #+begin_src emacs-lisp
 (use-package cdlatex
   :ensure t
-  :config
-  (setq cdlatex-math-symbol-alist
-	'(( ?c   ("\\colon"))
-	  ( ?m   ("\\mu" "\\mapsto"))
-	  ( ?p   ("\\pi" "\\varpi" "\\perp"))
-	  ( ?O   ("\\Omega" "\\mathrm{Orb}"))
-	  ( ?S   ("\\Sigma" "\\mathrm{Stab}"))
-	  ( ?-   ("\\cap" "\\leftrightarrow" "\\longleftrightarrow"))
-	  ( ?.   ("\\ldots" "\\cdots" "\\cdot"))
-	  ( ?<   ("\\leq" "\\langle"))
-	  ( ?>   ("\\geq" "\\rangle"))
-	  ( 123  ("\\{ \\}"))
-	  ( 125  ("\\subseteq"))
-	  ( ?\[  ("\\subseteq"))))
-
-  (setq cdlatex-math-modify-alist
-      '(( ?B "\\mathbb"         nil t nil nil)
-	( ?a "\\overrightarrow" nil t nil nil)))
-
-  (setq cdlatex-command-alist
-      '(("bin"  "Insert \\binom{}{}"
-	 "\\binom{?}{}"       cdlatex-position-cursor nil nil t)
-	("norm" "Insert \\Vert \\Vert"
-	 "\\Vert ?\\Vert"     cdlatex-position-cursor nil nil t)
-	("gen"  "Insert \\langle \\rangle"
-	 "\\langle ?\\rangle" cdlatex-position-cursor nil nil t)
-	("set"  "Insert a set"
-	 "\\{?\\mid \\}"      cdlatex-position-cursor nil nil t)))
-
-  (setq cdlatex-simplify-sub-super-scripts nil))
+  :custom
+  (cdlatex-math-symbol-alist
+   '(( ?c   ("\\colon"))
+     ( ?m   ("\\mu" "\\mapsto"))
+     ( ?p   ("\\pi" "\\varpi" "\\perp"))
+     ( ?O   ("\\Omega" "\\mathrm{Orb}"))
+     ( ?S   ("\\Sigma" "\\mathrm{Stab}"))
+     ( ?-   ("\\cap" "\\leftrightarrow" "\\longleftrightarrow"))
+     ( ?.   ("\\ldots" "\\cdots" "\\cdot"))
+     ( ?<   ("\\leq" "\\langle"))
+     ( ?>   ("\\geq" "\\rangle"))
+     ( 123  ("\\{ \\}"))
+     ( 125  ("\\subseteq"))
+     ( ?\[  ("\\subseteq"))))
+  (cdlatex-math-modify-alist
+   '(( ?B "\\mathbb"         nil t nil nil)
+     ( ?a "\\overrightarrow" nil t nil nil)))
+  (cdlatex-command-alist
+   '(("bin"  "Insert \\binom{}{}"
+      "\\binom{?}{}"       cdlatex-position-cursor nil nil t)
+     ("norm" "Insert \\Vert \\Vert"
+      "\\Vert ?\\Vert"     cdlatex-position-cursor nil nil t)
+     ("gen"  "Insert \\langle \\rangle"
+      "\\langle ?\\rangle" cdlatex-position-cursor nil nil t)
+     ("set"  "Insert a set"
+      "\\{?\\mid \\}"      cdlatex-position-cursor nil nil t)))
+  (cdlatex-simplify-sub-super-scripts nil))
   #+end_src
 
 * dired
@@ -207,7 +239,7 @@
 (use-package dired
   :bind (:map dired-mode-map
 	      ("r". dired-start-process))
-  :preface
+  :init
   ;; see https://oremacs.com/2015/01/04/dired-nohup/
   (defun dired-start-process (cmd &optional file-list)
     (interactive
@@ -229,13 +261,47 @@
 	    (format "%s %s" cmd list-switch)
 	  cmd)
 	(mapconcat #'expand-file-name file-list "\" \"")))))
+  :custom
+  ;; these are the commands that dired will run when pressed "!"
+  ;; we can cycle with "M-n", "M-p"
+  ;; since there is a "." (regexp), this will work for all file types
+  (dired-guess-shell-alist-user
+	'(("." "xdg-open" "termux-share")))
+  (dired-dwim-target t)
   :config
-  (setq dired-guess-shell-alist-user
-	'(("." "xdg-open" "termux-share"))
-	dired-dwim-target t)
+  ;; both dired-aux and dired-x come with emacs
   (use-package dired-aux)
   (use-package dired-x))
   #+END_SRC
+
+* djvu
+
+  #+begin_src emacs-lisp
+(use-package djvu
+  :ensure t)
+  #+end_src
+
+* doom-modeline
+
+  Only one of two methods from
+  https://github.com/seagle0128/doom-modeline/issues/187 sort of
+  worked to make modeline smaller.
+
+  #+begin_src emacs-lisp
+(use-package doom-modeline
+  :if window-system
+  :ensure t
+  :custom
+  (doom-modeline-height 5)
+  (doom-modeline-buffer-file-name-style 'truncate-all)
+  :config
+  (doom-modeline-mode)
+  (defun my-doom-modeline--font-height ()
+    "Calculate the actual char height of the mode-line."
+    (+ (frame-char-height) 1))
+  (advice-add #'doom-modeline--font-height
+	      :override #'my-doom-modeline--font-height))
+  #+end_src
 
 * elpy
 
@@ -244,8 +310,20 @@
   :ensure t
   :config
   (elpy-enable)
-  (setq python-shell-interpreter "ipython"
-	python-shell-interpreter-args "--i --simple-prompt"))
+  :custom
+  (python-shell-interpreter "ipython")
+  (python-shell-interpreter-args "--i --simple-prompt"))
+  #+end_src
+
+* flyspell
+
+  #+begin_src emacs-lisp
+(use-package flyspell
+  :ensure t
+  :defer t
+  :hook
+  (prog-mode . flyspell-prog-mode)
+  (text-mode . flyspell-mode))
   #+end_src
 
 * gap-mode                                                             :math:
@@ -253,16 +331,37 @@
   #+begin_src emacs-lisp
 (use-package gap-mode
   :ensure t
-  :config
-  (setq gap-executable "gap"
-	gap-start-options  '("-E" "-f" "-b" "-m" "1024m")))
+  :custom
+  (gap-executable "gap")
+  (gap-start-options  '("-E" "-f" "-b" "-m" "1024m")))
   #+end_src
 
 * helm
 
+  Many =helm= commands have a prefix =C-x c=
+
   #+begin_src emacs-lisp
 (use-package helm
-  :ensure t)
+  :ensure t
+  :bind ("M-x" . helm-M-x)
+  :config
+  (use-package helm-unicode
+    :ensure t))
+  #+end_src
+* helpful
+
+  Helpful is an alternative to the built-in Emacs help that provides
+  much more contextual information. https://github.com/Wilfred/helpful
+
+  #+begin_src emacs-lisp
+(use-package helpful
+  :ensure t
+  :bind 
+  ("C-h C" . helpful-command) 
+  ("C-h f" . helpful-callable) 
+  ("C-h F" . helpful-function) 
+  ("C-h k" . helpful-key) 
+  ("C-h v" . helpful-variable))
   #+end_src
 
 * ido
@@ -290,14 +389,34 @@
   :ensure t)
   #+end_src
 
-* org
+* move-text
+
+  https://github.com/emacsfodder/move-text
+
+  #+begin_src emacs-lisp
+(use-package move-text
+  :ensure t
+  :bind (([(super left)] . move-text-up)
+	 ([(super right)] . move-text-down)))
+  #+end_src
+
+* org-mode
 
   #+begin_src emacs-lisp
 (use-package org
+  :ensure org-plus-contrib
   :bind (("C-c a" . org-agenda)
+	 ("C-c c" . org-capture)
+	 ("C-c l" . org-store-link)
 	 :map org-mode-map
-	 ("$". yf/org-electric-dollar))
-  :preface
+	 ("$" . yf/org-electric-dollar)
+	 ("|" . org-absolute-value)
+	 ([?\s-j] . org-babel-next-src-block)
+	 ([?\s-k] . org-babel-previous-src-block)
+	 ([?\s-l] . org-edit-src-code)
+	 :map org-src-mode-map
+	 ([?\s-l] . org-edit-src-exit))
+  :init
   ;; from Nicolas Richard <theonewiththeevillook@yahoo.fr>
   ;; Date: Fri, 8 Mar 2013 16:23:02 +0100
   ;; Message-ID: <87vc913oh5.fsf@yahoo.fr>
@@ -323,6 +442,22 @@ When called twice, replace the previously inserted \\(\\) by one $."
   ;; see https://lists.gnu.org/archive/html/emacs-orgmode/2015-09/msg00118.html
   (defmacro by-backend (&rest body)
     `(case org-export-current-backend ,@body))
+  ;; see http://endlessparentheses.com/ispell-and-org-mode.html
+  (defun endless/org-ispell ()
+    "Configure `ispell-skip-region-alist' for `org-mode'."
+    (make-local-variable 'ispell-skip-region-alist)
+    (add-to-list 'ispell-skip-region-alist '(org-property-drawer-re))
+    (add-to-list 'ispell-skip-region-alist '("~" "~"))
+    (add-to-list 'ispell-skip-region-alist '("=" "="))
+    (add-to-list 'ispell-skip-region-alist '("^#\\+begin_src" . "^#\\+end_src")))
+  (defun org-absolute-value ()
+    "Insert || and leave point inside when pressing |"
+    (interactive)
+    (if (org-inside-LaTeX-fragment-p)
+	(progn
+	  (insert "||")
+	  (backward-char 1))
+      (insert "|")))
   (defun my-org-mode-hook ()
     (turn-on-auto-revert-mode)
     (turn-on-org-cdlatex))
@@ -330,43 +465,67 @@ When called twice, replace the previously inserted \\(\\) by one $."
   (require 'ox-beamer)
   (use-package htmlize
     :ensure t)
-  (if (not termux-p)
-      (use-package ob-ipython
-	:ensure t))
+  (use-package ob-ipython
+    :if window-system
+    :ensure t)
   (use-package ob-sagemath
     :ensure t)
+  (use-package org-mime
+    :ensure t)
   (use-package org-pomodoro
-    :ensure t)
+    :ensure t
+    :commands (org-pomodoro)
+    :custom
+    (alert-user-configuration
+     (quote ((((:category . "org-pomodoro")) libnotify nil))))
+    (org-pomodoro-keep-killed-pomodoro-time t)
+    (org-pomodoro-long-break-length 15))
   (use-package org-ref
-    :ensure t)
+    :ensure t
+    :custom
+    (org-ref-completion-library 'org-ref-helm-bibtex))
   (use-package ox-ipynb
     :load-path "ox-ipynb/")
+  :custom
+  (org-beamer-environments-extra
+	'(("conjecture"   "j" "\\begin{conjecture}%a%U"   "\\end{conjecture}")
+	  ("corollary"   "r" "\\begin{corollary}%a%U"   "\\end{corollary}")
+	  ("lemma"       "l" "\\begin{lemma}%a%U"       "\\end{lemma}")
+	  ("proposition" "P" "\\begin{proposition}%a%U" "\\end{proposition}")))
+  (org-export-with-tags nil)
+  (org-file-apps
+   '((auto-mode . emacs)
+     ("pdf" . "evince %s")))
+  (org-highlight-latex-and-related '(latex))
+  (org-latex-listings t)
+  (org-log-done 'note)
+  (org-return-follows-link t)
+  (org-src-preserve-indentation t)
+  (org-support-shift-select 'always)
+  :config
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((python . t)
-     (ruby . t)
-     (latex . t)))
-  (setq org-beamer-environments-extra
-	'(("corollary"   "r" "\\begin{corollary}%a%U"   "\\end{corollary}")
-	  ("lemma"       "l" "\\begin{lemma}%a%U"       "\\end{lemma}")
-	  ("proposition" "P" "\\begin{proposition}%a%U" "\\end{proposition}"))
-	org-export-with-tags nil
-	org-file-apps
-	'((auto-mode . emacs)
-	  ("pdf" . "evince %s"))
-	org-highlight-latex-and-related '(latex)
-	org-latex-listings t
-	org-log-done 'note
-	org-return-follows-link t
-	org-src-fontify-natively t
-	org-src-preserve-indentation t
-	org-support-shift-select 'always)
-  (add-hook 'org-mode-hook #'my-org-mode-hook)
-  ;; when in :bind, these produce "Autoloading failed to define function"
-  (define-key org-mode-map (kbd "s-j") #'org-babel-next-src-block)
-  (define-key org-mode-map (kbd "s-k") #'org-babel-previous-src-block)
-  (define-key org-mode-map (kbd "s-l") #'org-edit-src-code)
-  (define-key org-src-mode-map (kbd "s-l") #'org-edit-src-exit))
+   '((dot .t)
+     (latex . t)
+     (python . t)
+     (ruby . t)))
+  :hook
+  (org-mode . my-org-mode-hook)
+  (org-mode . endless/org-ispell)
+  (org-babel-after-execute . org-redisplay-inline-images))
+  #+end_src
+
+* sage-shell-mode
+
+  https://github.com/sagemath/sage-shell-mode
+
+  #+begin_quote
+  Emacs front end for SageMath
+  #+end_quote
+
+  #+begin_src emacs-lisp
+(use-package sage-shell-mode
+  :ensure t)
   #+end_src
 
 * smartparens
@@ -386,7 +545,8 @@ When called twice, replace the previously inserted \\(\\) by one $."
   (show-smartparens-global-mode 1)
   (sp-local-pair 'org-mode "=" "="
 		 :unless '(sp-point-after-word-p sp-in-math-p)
-		 :post-handlers '(("[d1]" "SPC"))))
+		 :post-handlers '(("[d1]" "SPC")))
+  (sp-local-pair 'python-mode "``" "``"))
   #+end_src
 
 * smex
@@ -401,6 +561,7 @@ When called twice, replace the previously inserted \\(\\) by one $."
 
   #+begin_src emacs-lisp
 (use-package smex
+  :disabled
   :ensure t
   :bind ("M-x" . smex)
   :config (smex-initialize))

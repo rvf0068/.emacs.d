@@ -16,3 +16,12 @@ https://github.com/Fuco1/smartparens/wiki/Permissions
 url/
 games/
 /history
+/bookmarks
+transient/
+/custom.el
+/elpy/
+/newsticker/
+/recentf
+/org-journal.cache
+/network-security.data
+/projectile-bookmarks.eld
