@@ -269,6 +269,11 @@
 	'(("." "xdg-open" "termux-share")))
   (dired-dwim-target t)
   :config
+  ;; see http://pragmaticemacs.com/emacs/dynamically-filter-directory-listing-with-dired-narrow/
+  (use-package dired-narrow
+  :ensure t
+  :bind (:map dired-mode-map
+              ("/" . dired-narrow)))
   ;; both dired-aux and dired-x come with emacs
   (use-package dired-aux)
   (use-package dired-x))
