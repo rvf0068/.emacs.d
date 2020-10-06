@@ -1,6 +1,6 @@
 ;; see http://emacs.1067599.n8.nabble.com/use-package-tp396907p397337.html
 ;; we need it for the function 'case' in the 'by-backend' macro
-(require 'cl)
+(require 'cl-lib)
 
 ;; taking ideas from https://github.com/jkitchin/scimax
 ;;
