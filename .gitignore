@@ -25,3 +25,5 @@ transient/
 /org-journal.cache
 /network-security.data
 /projectile-bookmarks.eld
+/org-roam.db
+/tramp
