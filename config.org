@@ -598,10 +598,16 @@ visual-fill-column-mode is a small Emacs minor mode that mimics the effect of fi
   templates to YASnippet. Watch a demo on YouTube.
   #+END_QUOTE
 
+  Setting =yas-indent-line= to fixed has the effect that the text
+  expanded by a snipped is indented as much as where the snipped is
+  invoked. 
+  
   #+begin_src emacs-lisp
 (use-package yasnippet
   :ensure t
-  :config (yas-global-mode))
+  :config (yas-global-mode)
+  :custom
+  (yas-indent-line 'fixed))
   #+end_src
 
 * zerodark-theme
