@@ -210,8 +210,9 @@
      ( 125  ("\\subseteq"))
      ( ?\[  ("\\subseteq"))))
   (cdlatex-math-modify-alist
-   '(( ?B "\\mathbb"         nil t nil nil)
-     ( ?a "\\overrightarrow" nil t nil nil)))
+   '(( ?a "\\overrightarrow" nil t nil nil)
+     ( ?k "\\mathfrak" nil t nil nil)
+     ( ?B "\\mathbb"         nil t nil nil)))
   (cdlatex-command-alist
    '(("bin"  "Insert \\binom{}{}"
       "\\binom{?}{}"       cdlatex-position-cursor nil nil t)
