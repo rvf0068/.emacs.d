@@ -225,18 +225,47 @@ belong to a package configuration.
   (cdlatex-simplify-sub-super-scripts nil))
   #+end_src
 
+* counsel
+
+  #+begin_src emacs-lisp
+(use-package counsel
+  :ensure t)
+  #+end_src
+
+* deft
+
+  #+begin_src emacs-lisp
+(use-package deft
+  :ensure t
+  :after org
+  :bind
+  ("C-c n d" . deft)
+  :custom
+  (deft-auto-save-interval 0)
+  (deft-default-extension "org")
+  ;;(deft-directory "/home/rafael/Dropbox/org/reading-notes/")
+  (deft-extensions '("org" "tex"))
+  (deft-file-naming-rules '((noslash . "-")
+			    (nospace . "-")
+			    (case-fn . downcase)))
+  (deft-ignore-file-regexp "options\\.org\\|readme\\.org")
+  (deft-recursive t)
+  (deft-use-filter-string-for-filename t))
+  #+end_src
+
+
 * dired
 
   https://www.gnu.org/software/emacs/manual/html_node/emacs/Dired.html
 
-  #+BEGIN_QUOTE
+  #+begin_quote
   Dired makes an Emacs buffer containing a listing of a directory, and
   optionally some of its subdirectories as well. You can use the
   normal Emacs commands to move around in this buffer, and special
   Dired commands to operate on the listed files.
-  #+END_QUOTE
+  #+end_quote
 
-  #+BEGIN_SRC emacs-lisp
+  #+begin_src emacs-lisp
 (use-package dired
   :bind (:map dired-mode-map
 	      ("r". dired-start-process))
