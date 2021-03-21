@@ -186,6 +186,9 @@ belong to a package configuration.
   myself am using CDLaTeX on top of AUCTeX.
   #+END_QUOTE
 
+  The settings in =cdlatex-math-symbol-alist= are useful also when
+  writing math in org-mode.
+
   #+begin_src emacs-lisp
 (use-package cdlatex
   :ensure t
@@ -194,10 +197,13 @@ belong to a package configuration.
    '(( ?c   ("\\colon"))
      ( ?m   ("\\mu" "\\mapsto"))
      ( ?p   ("\\pi" "\\varpi" "\\perp"))
+     ( ?o   ("\\omega" "\\oplus"))
      ( ?O   ("\\Omega" "\\mathrm{Orb}"))
      ( ?S   ("\\Sigma" "\\mathrm{Stab}"))
+     ( ?T   ("\\bigtriangleup"))
      ( ?-   ("\\cap" "\\leftrightarrow" "\\longleftrightarrow"))
      ( ?.   ("\\ldots" "\\cdots" "\\cdot"))
+     ( ?*   ("\\times" "\\otimes"))
      ( ?<   ("\\leq" "\\langle"))
      ( ?>   ("\\geq" "\\rangle"))
      ( 123  ("\\{ \\}"))
