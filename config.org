@@ -42,8 +42,14 @@
       (string-suffix-p "mingw32" system-configuration))
 
 (load custom-file 'noerror)
+#+end_src
 
+Here we include configuration stuff that does not seem to properly
+belong to a package configuration.
+
+#+begin_src emacs-lisp
 (column-number-mode t)
+(global-visual-line-mode)
 
 (abbrev-mode 1)
 
@@ -60,7 +66,7 @@
 
 (display-time)
 
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
+;;(add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;; from http://stackoverflow.com/a/9414763/577007
 (defun prelude-copy-file-name-to-clipboard ()
