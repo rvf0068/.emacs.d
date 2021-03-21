@@ -8,23 +8,11 @@
 * init
 
   #+begin_src emacs-lisp
-;; From http://www.emacswiki.org/emacs/LoadPath#AddSubDirectories
-;; to add a directory and its subdirectories
 (let ((default-directory my-emacs-personal-dir)
       (personal-el-file (expand-file-name "personal.el" my-emacs-personal-dir))
       (personal-org-file (expand-file-name "personal.org" my-emacs-personal-dir)))
   (make-directory default-directory t)
-  ;; for some reason, this is not working to add all subdirectories of
-  ;; the personal dir to load-path, in a way that they added at the
-  ;; beginning of the list.
-
-  ;; (setq load-path
-  ;;       (append
-  ;;        (let ((load-path (copy-sequence load-path))) ;; Shadow
-  ;;          (append
-  ;;           (copy-sequence (normal-top-level-add-to-load-path '(".")))
-  ;;           (normal-top-level-add-subdirs-to-load-path)))
-  ;;        load-path))
+  ;; this adds also subdirectories of the personal dir to load-path
   (normal-top-level-add-subdirs-to-load-path)
   (if (file-exists-p personal-org-file)
       (org-babel-load-file personal-org-file)
