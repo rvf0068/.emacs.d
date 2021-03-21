@@ -555,24 +555,6 @@ When called twice, replace the previously inserted \\(\\) by one $."
   (sp-local-pair 'python-mode "``" "``"))
   #+end_src
 
-* smex
-
-  https://github.com/nonsequitur/smex/
-
-  #+BEGIN_QUOTE
-  Smex is a M-x enhancement for Emacs. Built on top of Ido, it
-  provides a convenient interface to your recently and most frequently
-  used commands. And to all the other commands, too.
-  #+END_QUOTE
-
-  #+begin_src emacs-lisp
-(use-package smex
-  :disabled
-  :ensure t
-  :bind ("M-x" . smex)
-  :config (smex-initialize))
-  #+end_src
-
 * visual-fill-column
 
   https://github.com/joostkremers/visual-fill-column
@@ -611,15 +593,4 @@ visual-fill-column-mode is a small Emacs minor mode that mimics the effect of fi
   (yas-indent-line 'fixed))
   #+end_src
 
-* zerodark-theme
 
-  #+begin_src emacs-lisp
-(use-package zerodark-theme
-  :ensure t)
-  #+end_src
-
-
-
-* COMMENT Not for termux
-
-** sage-shell-mode
