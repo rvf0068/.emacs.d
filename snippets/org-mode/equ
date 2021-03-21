@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: equation
 # key: equ
+# condition: 'auto
 # --
 #+name: eq-$1
 \begin{equation}
