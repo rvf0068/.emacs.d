@@ -31,7 +31,7 @@
 
 (setq confirm-nonexistent-file-or-buffer nil
       custom-file (concat user-emacs-directory "custom.el")
-      initial-buffer-choice (expand-file-name "welcome.org" my-emacs-dir)
+      ;; initial-buffer-choice (expand-file-name "welcome.org" my-emacs-dir)
       frame-title-format "%b: %+%+ %f"
       laboratorio-p (string-prefix-p "equipo" (system-name))
       mouse-drag-copy-region t
