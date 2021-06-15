@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: sage
+# key: sage
+# --
+#+begin_src sage
+$0
+#+end_src
