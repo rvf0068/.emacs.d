@@ -53,6 +53,9 @@ belong to a package configuration.
 
 (abbrev-mode 1)
 
+;; overwrite selected text
+(delete-selection-mode t)
+
 (if (not termux-p)
     (display-battery-mode))
 
@@ -324,7 +327,6 @@ belong to a package configuration.
 
   #+begin_src emacs-lisp
 (use-package doom-modeline
-  :disabled
   :if window-system
   :ensure t
   :custom
