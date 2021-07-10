@@ -7,6 +7,14 @@
 
 * init
 
+  This makes it possible to clone this configuration and run it from any directory, by using the command =emacs -l -d mydirectory=. Personal configurations can go to a file =personal.el= or in an org file called =personal.org= in emacs-lisp blocks.
+
+  A directory =backups= is created in the home directory, where Emacs will store the backups.
+
+  There are two booleans define, to check if we are running on a termux system, or a windows system.
+
+  Emacs will store customizations in a file =custom.el=.
+
   #+begin_src emacs-lisp
 (let ((default-directory my-emacs-personal-dir)
       (personal-el-file (expand-file-name "personal.el" my-emacs-personal-dir))
@@ -33,7 +41,6 @@
       custom-file (concat user-emacs-directory "custom.el")
       ;; initial-buffer-choice (expand-file-name "welcome.org" my-emacs-dir)
       frame-title-format "%b: %+%+ %f"
-      laboratorio-p (string-prefix-p "equipo" (system-name))
       mouse-drag-copy-region t
       termux-p
       (or (string-suffix-p "linux-android" system-configuration)
@@ -44,14 +51,11 @@
 (load custom-file 'noerror)
 #+end_src
 
-Here we include configuration stuff that does not seem to properly
-belong to a package configuration.
+Here we include configuration stuff that does not seem to properly belong to a package configuration.
 
 #+begin_src emacs-lisp
 (column-number-mode t)
 (global-visual-line-mode)
-
-(abbrev-mode 1)
 
 ;; overwrite selected text
 (delete-selection-mode t)
@@ -62,14 +66,7 @@ belong to a package configuration.
 (if windows-p
     (set-language-environment "UTF-8"))
 
-(if laboratorio-p
-    (progn
-      (org-defkey org-cdlatex-mode-map (kbd "/") #'cdlatex-math-symbol)
-      (setq cdlatex-math-symbol-prefix ?/)))
-
 (display-time)
-
-;;(add-hook 'text-mode-hook 'turn-on-auto-fill)
 
 ;; from http://stackoverflow.com/a/9414763/577007
 (defun prelude-copy-file-name-to-clipboard ()
@@ -116,6 +113,8 @@ belong to a package configuration.
 
   #+begin_src emacs-lisp
 (use-package abbrev
+  :config
+  (abbrev-mode 1)
   :hook
   (text-mode . abbrev-mode))
   #+end_src
@@ -125,10 +124,7 @@ belong to a package configuration.
   https://www.gnu.org/software/auctex/
 
   #+BEGIN_QUOTE
-  AUCTeX is an extensible package for writing and formatting TeX files
-  in GNU Emacs and XEmacs. It supports many different TeX macro
-  packages, including AMS-TeX, LaTeX, Texinfo, ConTeXt, and docTeX
-  (dtx files).
+  AUCTeX is an extensible package for writing and formatting TeX files in GNU Emacs and XEmacs. It supports many different TeX macro packages, including AMS-TeX, LaTeX, Texinfo, ConTeXt, and docTeX (dtx files).
   #+END_QUOTE
 
   #+begin_src emacs-lisp
@@ -182,15 +178,10 @@ belong to a package configuration.
   https://staff.fnwi.uva.nl/c.dominik/Tools/cdlatex/
 
   #+BEGIN_QUOTE
-  CDLaTeX is a minor mode for Emacs supporting fast insertion of
-  environment templates and math stuff in LaTeX. Similar commands are
-  also offered as part of the AUCTeX package, but it is not the same -
-  CDLaTeX focuses on speediness for inserting LaTeX constructs. I
-  myself am using CDLaTeX on top of AUCTeX.
+  CDLaTeX is a minor mode for Emacs supporting fast insertion of environment templates and math stuff in LaTeX. Similar commands are also offered as part of the AUCTeX package, but it is not the same - CDLaTeX focuses on speediness for inserting LaTeX constructs. I myself am using CDLaTeX on top of AUCTeX.
   #+END_QUOTE
 
-  The settings in =cdlatex-math-symbol-alist= are useful also when
-  writing math in org-mode.
+  The settings in =cdlatex-math-symbol-alist= are useful also when writing math in org-mode.
 
   #+begin_src emacs-lisp
 (use-package cdlatex
@@ -209,8 +200,6 @@ belong to a package configuration.
      ( ?*   ("\\times" "\\otimes"))
      ( ?<   ("\\leq" "\\langle"))
      ( ?>   ("\\geq" "\\rangle"))
-     ( 123  ("\\{ \\}"))
-     ( 125  ("\\subseteq"))
      ( ?\[  ("\\subseteq"))))
   (cdlatex-math-modify-alist
    '(( ?a "\\overrightarrow" nil t nil nil)
@@ -256,57 +245,28 @@ belong to a package configuration.
   (deft-use-filter-string-for-filename t))
   #+end_src
 
-
 * dired
 
   https://www.gnu.org/software/emacs/manual/html_node/emacs/Dired.html
 
   #+begin_quote
-  Dired makes an Emacs buffer containing a listing of a directory, and
-  optionally some of its subdirectories as well. You can use the
-  normal Emacs commands to move around in this buffer, and special
-  Dired commands to operate on the listed files.
+  Dired makes an Emacs buffer containing a listing of a directory, and optionally some of its subdirectories as well. You can use the normal Emacs commands to move around in this buffer, and special Dired commands to operate on the listed files.
   #+end_quote
 
   #+begin_src emacs-lisp
 (use-package dired
-  :bind (:map dired-mode-map
-	      ("r". dired-start-process))
-  :init
-  ;; see https://oremacs.com/2015/01/04/dired-nohup/
-  (defun dired-start-process (cmd &optional file-list)
-    (interactive
-     (let ((files (dired-get-marked-files
-		   t current-prefix-arg)))
-       (list
-	(dired-read-shell-command "& on %s: "
-				  current-prefix-arg files)
-	files)))
-    (let (list-switch)
-      (start-process
-       cmd nil shell-file-name
-       shell-command-switch
-       (format
-	"nohup 1>/dev/null 2>/dev/null %s \"%s\""
-	(if (and (> (length file-list) 1)
-		 (setq list-switch
-		       (cadr (assoc cmd dired-filelist-cmd))))
-	    (format "%s %s" cmd list-switch)
-	  cmd)
-	(mapconcat #'expand-file-name file-list "\" \"")))))
   :custom
   ;; these are the commands that dired will run when pressed "!"
   ;; we can cycle with "M-n", "M-p"
   ;; since there is a "." (regexp), this will work for all file types
   (dired-guess-shell-alist-user
-	'(("." "xdg-open" "termux-share")))
+   '(("." "xdg-open" "termux-share")))
   (dired-dwim-target t)
   :config
   ;; see http://pragmaticemacs.com/emacs/dynamically-filter-directory-listing-with-dired-narrow/
   (use-package dired-narrow
-  :ensure t
-  :bind (:map dired-mode-map
-              ("/" . dired-narrow)))
+    :bind (:map dired-mode-map
+		("/" . dired-narrow)))
   ;; both dired-aux and dired-x come with emacs
   (use-package dired-aux)
   (use-package dired-x))
@@ -321,24 +281,14 @@ belong to a package configuration.
 
 * doom-modeline
 
-  Only one of two methods from
-  https://github.com/seagle0128/doom-modeline/issues/187 sort of
-  worked to make modeline smaller.
-
   #+begin_src emacs-lisp
 (use-package doom-modeline
   :if window-system
   :ensure t
   :custom
-  (doom-modeline-height 5)
   (doom-modeline-buffer-file-name-style 'truncate-all)
   :config
-  (doom-modeline-mode)
-  (defun my-doom-modeline--font-height ()
-    "Calculate the actual char height of the mode-line."
-    (+ (frame-char-height) 1))
-  (advice-add #'doom-modeline--font-height
-	      :override #'my-doom-modeline--font-height))
+  (doom-modeline-mode))
   #+end_src
 
 * elpy
@@ -376,15 +326,12 @@ belong to a package configuration.
 
 * helm
 
-  Many =helm= commands have a prefix =C-x c=
+  Many =helm= commands have a prefix =C-x c=. For example, =C-x c 8= runs =helm-ucs=, which lets choose and insert an unicode character.
 
   #+begin_src emacs-lisp
 (use-package helm
   :ensure t
-  :bind ("M-x" . helm-M-x)
-  :config
-  (use-package helm-unicode
-    :ensure t))
+  :bind ("M-x" . helm-M-x))
   #+end_src
 
 * helpful
@@ -476,7 +423,6 @@ When called twice, replace the previously inserted \\(\\) by one $."
       (s-with contents
 	(replace-regexp-in-string "\\\\(" "\\\\\\\\(")
 	(replace-regexp-in-string "\\\\)" "\\\\\\\\)"))))
-
   (add-to-list 'org-export-filter-final-output-functions
 	       'replace-math-md)
   ;; see https://lists.gnu.org/archive/html/emacs-orgmode/2015-09/msg00118.html
@@ -641,17 +587,10 @@ visual-fill-column-mode is a small Emacs minor mode that mimics the effect of fi
   https://github.com/joaotavora/yasnippet
 
   #+BEGIN_QUOTE
-  YASnippet is a template system for Emacs. It allows you to type an
-  abbreviation and automatically expand it into function
-  templates. Bundled language templates include: C, C++, C#, Perl,
-  Python, Ruby, SQL, LaTeX, HTML, CSS and more. The snippet syntax is
-  inspired from TextMate's syntax, you can even import most TextMate
-  templates to YASnippet. Watch a demo on YouTube.
+  YASnippet is a template system for Emacs. It allows you to type an abbreviation and automatically expand it into function templates. Bundled language templates include: C, C++, C#, Perl, Python, Ruby, SQL, LaTeX, HTML, CSS and more. The snippet syntax is inspired from TextMate's syntax, you can even import most TextMate templates to YASnippet. Watch a demo on YouTube.
   #+END_QUOTE
 
-  Setting =yas-indent-line= to fixed has the effect that the text
-  expanded by a snipped is indented as much as where the snipped is
-  invoked. 
+  Setting =yas-indent-line= to fixed has the effect that the text expanded by a snipped is indented as much as where the snipped is invoked.
   
   #+begin_src emacs-lisp
 (use-package yasnippet
@@ -660,5 +599,3 @@ visual-fill-column-mode is a small Emacs minor mode that mimics the effect of fi
   :custom
   (yas-indent-line 'fixed))
   #+end_src
-
-
