@@ -512,6 +512,7 @@ When called twice, replace the previously inserted \\(\\) by one $."
   (use-package htmlize
     :ensure t)
   (use-package ob-ipython
+    :disabled
     :if window-system
     :ensure t)
   (use-package ob-sagemath
