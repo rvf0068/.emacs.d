@@ -7,15 +7,15 @@
 
 * init
 
-  This makes it possible to clone this configuration and run it from any directory, by using the command =emacs -l -d mydirectory=. Personal configurations can go to a file =personal.el= or in an org file called =personal.org= in emacs-lisp blocks.
+This makes it possible to clone this configuration and run it from any directory, by using the command =emacs -l -d mydirectory=. Personal configurations can go to a file =personal.el= or in an org file called =personal.org= in emacs-lisp blocks.
 
-  A directory =backups= is created in the home directory, where Emacs will store the backups.
+A directory =backups= is created in the home directory, where Emacs will store the backups.
 
-  There are two booleans define, to check if we are running on a termux system, or a windows system.
+There are two booleans define, to check if we are running on a termux system, or a windows system.
 
-  Emacs will store customizations in a file =custom.el=.
+Emacs will store customizations in a file =custom.el=.
 
-  #+begin_src emacs-lisp
+#+begin_src emacs-lisp
 (let ((default-directory my-emacs-personal-dir)
       (personal-el-file (expand-file-name "personal.el" my-emacs-personal-dir))
       (personal-org-file (expand-file-name "personal.org" my-emacs-personal-dir)))
@@ -111,23 +111,25 @@ Here we include configuration stuff that does not seem to properly belong to a p
 
 * abbrev
 
-  #+begin_src emacs-lisp
+https://www.gnu.org/software/emacs/manual/html_node/emacs/Abbrevs.html
+
+#+begin_src emacs-lisp
 (use-package abbrev
   :config
   (abbrev-mode 1)
   :hook
   (text-mode . abbrev-mode))
-  #+end_src
+#+end_src
 
 * auctex                                                               :math:
 
-  https://www.gnu.org/software/auctex/
+https://www.gnu.org/software/auctex/
 
-  #+BEGIN_QUOTE
-  AUCTeX is an extensible package for writing and formatting TeX files in GNU Emacs and XEmacs. It supports many different TeX macro packages, including AMS-TeX, LaTeX, Texinfo, ConTeXt, and docTeX (dtx files).
-  #+END_QUOTE
+#+BEGIN_QUOTE
+AUCTeX is an extensible package for writing and formatting TeX files in GNU Emacs and XEmacs. It supports many different TeX macro packages, including AMS-TeX, LaTeX, Texinfo, ConTeXt, and docTeX (dtx files).
+#+END_QUOTE
 
-  #+begin_src emacs-lisp
+#+begin_src emacs-lisp
 (use-package tex
   :ensure auctex
   :mode ("\\.tex\\'" . latex-mode)
@@ -158,32 +160,32 @@ Here we include configuration stuff that does not seem to properly belong to a p
   :hook
   (LaTeX-mode . my-latex-config)
   (LaTeX-mode . turn-on-reftex))
-  #+end_src
+#+end_src
 
 * bibretrieve
 
-  https://github.com/pzorin/bibretrieve
+https://github.com/pzorin/bibretrieve
 
-  #+begin_quote
-  An Emacs library for searching and downloading BibTeX entries from the web.
-  #+end_quote
+#+begin_quote
+An Emacs library for searching and downloading BibTeX entries from the web.
+#+end_quote
 
-  #+begin_src emacs-lisp
+#+begin_src emacs-lisp
 (use-package bibretrieve
   :ensure t)
-  #+end_src
+#+end_src
 
 * cdlatex                                                              :math:
 
-  https://staff.fnwi.uva.nl/c.dominik/Tools/cdlatex/
+https://staff.fnwi.uva.nl/c.dominik/Tools/cdlatex/
 
-  #+BEGIN_QUOTE
-  CDLaTeX is a minor mode for Emacs supporting fast insertion of environment templates and math stuff in LaTeX. Similar commands are also offered as part of the AUCTeX package, but it is not the same - CDLaTeX focuses on speediness for inserting LaTeX constructs. I myself am using CDLaTeX on top of AUCTeX.
-  #+END_QUOTE
+#+BEGIN_QUOTE
+CDLaTeX is a minor mode for Emacs supporting fast insertion of environment templates and math stuff in LaTeX. Similar commands are also offered as part of the AUCTeX package, but it is not the same - CDLaTeX focuses on speediness for inserting LaTeX constructs. I myself am using CDLaTeX on top of AUCTeX.
+#+END_QUOTE
 
-  The settings in =cdlatex-math-symbol-alist= are useful also when writing math in org-mode.
+The settings in =cdlatex-math-symbol-alist= are useful also when writing math in org-mode.
 
-  #+begin_src emacs-lisp
+#+begin_src emacs-lisp
 (use-package cdlatex
   :ensure t
   :custom
@@ -215,16 +217,34 @@ Here we include configuration stuff that does not seem to properly belong to a p
      ("set"  "Insert a set"
       "\\{?\\mid \\}"      cdlatex-position-cursor nil nil t)))
   (cdlatex-simplify-sub-super-scripts nil))
-  #+end_src
+#+end_src
 
 * counsel
 
-  #+begin_src emacs-lisp
+  https://github.com/abo-abo/swiper
+
+  #+begin_quote
+flexible, simple tools for minibuffer completion in Emacs
+
+Ivy, a generic completion mechanism for Emacs.
+
+Counsel, a collection of Ivy-enhanced versions of common Emacs commands.
+
+Swiper, an Ivy-enhanced alternative to Isearch.
+  #+end_quote
+
+#+begin_src emacs-lisp
 (use-package counsel
   :ensure t)
-  #+end_src
+#+end_src
 
 * deft
+
+  https://jblevins.org/projects/deft/
+
+  #+begin_quote
+Deft is an Emacs mode for quickly browsing, filtering, and editing directories of plain text notes, inspired by Notational Velocity. It was designed for increased productivity when writing and taking notes by making it fast and simple to find the right file at the right time and by automating many of the usual tasks such as creating new files and saving files.
+  #+end_quote
 
   #+begin_src emacs-lisp
 (use-package deft
@@ -235,13 +255,14 @@ Here we include configuration stuff that does not seem to properly belong to a p
   :custom
   (deft-auto-save-interval 0)
   (deft-default-extension "org")
-  ;;(deft-directory "/home/rafael/Dropbox/org/reading-notes/")
   (deft-extensions '("org" "tex"))
   (deft-file-naming-rules '((noslash . "-")
 			    (nospace . "-")
 			    (case-fn . downcase)))
   (deft-ignore-file-regexp "options\\.org\\|readme\\.org")
   (deft-recursive t)
+  (deft-strip-summary-regexp ":PROPERTIES:\n\\(.+\n\\)+:END:\n")
+  (deft-use-filename-as-title 't)
   (deft-use-filter-string-for-filename t))
   #+end_src
 
@@ -272,14 +293,13 @@ Here we include configuration stuff that does not seem to properly belong to a p
   (use-package dired-x))
   #+END_SRC
 
-* djvu
-
-  #+begin_src emacs-lisp
-(use-package djvu
-  :ensure t)
-  #+end_src
-
 * doom-modeline
+
+  https://github.com/seagle0128/doom-modeline
+
+  #+begin_quote
+A fancy and fast mode-line inspired by minimalism design.
+  #+end_quote
 
   #+begin_src emacs-lisp
 (use-package doom-modeline
@@ -293,6 +313,12 @@ Here we include configuration stuff that does not seem to properly belong to a p
 
 * elpy
 
+  https://github.com/jorgenschaefer/elpy
+
+  #+begin_quote
+ Emacs Python Development Environment
+  #+end_quote
+
   #+begin_src emacs-lisp
 (use-package elpy
   :ensure t
@@ -305,16 +331,26 @@ Here we include configuration stuff that does not seem to properly belong to a p
 
 * flyspell
 
+  Flyspell comes with Emacs.
+
+  #+begin_quote
+ Flyspell enables on-the-fly spell checking in Emacs by the means of a minor mode.
+  #+end_quote
+
   #+begin_src emacs-lisp
 (use-package flyspell
-  :ensure t
-  :defer t
   :hook
   (prog-mode . flyspell-prog-mode)
   (text-mode . flyspell-mode))
   #+end_src
 
 * gap-mode                                                             :math:
+
+  https://www.gap-system.org/Packages/Contrib/emacs.html
+
+  #+begin_quote
+An Emacs major-mode for editing GAP files.
+  #+end_quote
 
   #+begin_src emacs-lisp
 (use-package gap-mode
@@ -326,18 +362,26 @@ Here we include configuration stuff that does not seem to properly belong to a p
 
 * helm
 
+  https://github.com/emacs-helm/helm
+
+  #+begin_quote
+Helm is an Emacs framework for incremental completions and narrowing selections. It provides an easy-to-use API for developers wishing to build their own Helm applications in Emacs, powerful search tools and dozens of already built-in commands providing completion to almost everything.
+  #+end_quote
+
   Many =helm= commands have a prefix =C-x c=. For example, =C-x c 8= runs =helm-ucs=, which lets choose and insert an unicode character.
 
   #+begin_src emacs-lisp
 (use-package helm
   :ensure t
-  :bind ("M-x" . helm-M-x))
+  :bind ("M-x" . helm-M-x)
+  :config (helm-mode))
   #+end_src
 
 * helpful
 
-  Helpful is an alternative to the built-in Emacs help that provides
-  much more contextual information. https://github.com/Wilfred/helpful
+   https://github.com/Wilfred/helpful
+
+  Helpful is an alternative to the built-in Emacs help that provides much more contextual information.
 
   #+begin_src emacs-lisp
 (use-package helpful
@@ -352,6 +396,12 @@ Here we include configuration stuff that does not seem to properly belong to a p
 
 * ido
 
+  Ido comes with Emacs.
+
+  #+begin_quote
+The Ido package lets you switch between buffers and visit files and directories with a minimum of keystrokes. It is a superset of Iswitchb, the interactive buffer switching package by Stephen Eglen.
+  #+end_quote
+
   #+begin_src emacs-lisp
 (use-package ido
   :config
@@ -359,6 +409,12 @@ Here we include configuration stuff that does not seem to properly belong to a p
   #+end_src
 
 * magit
+
+  https://magit.vc
+
+  #+begin_quote
+Magit is a complete text-based user interface to Git.
+  #+end_quote
 
   #+begin_src emacs-lisp
 (use-package magit
@@ -370,6 +426,10 @@ Here we include configuration stuff that does not seem to properly belong to a p
 
   https://jblevins.org/projects/markdown-mode/
 
+  #+begin_quote
+markdown-mode is a major mode for editing Markdown-formatted text.
+  #+end_quote
+
   #+begin_src emacs-lisp
 (use-package markdown-mode
   :ensure t)
@@ -379,6 +439,10 @@ Here we include configuration stuff that does not seem to properly belong to a p
 
   https://github.com/emacsfodder/move-text
 
+  #+begin_quote
+move current line or region up or down
+  #+end_quote
+
   #+begin_src emacs-lisp
 (use-package move-text
   :ensure t
@@ -386,7 +450,17 @@ Here we include configuration stuff that does not seem to properly belong to a p
 	 ([(super right)] . move-text-down)))
   #+end_src
 
-* org-mode
+* org mode
+
+  Org mode comes with Emacs.
+
+  https://orgmode.org/
+
+  #+begin_quote
+A GNU Emacs major mode for convenient plain text markup — and much more.
+
+Org mode is for keeping notes, maintaining to-do lists, planning projects, authoring documents, computational notebooks, literate programming and more — in a fast and effective plain text system.
+  #+end_quote
 
   #+begin_src emacs-lisp
 (use-package org
@@ -450,6 +524,7 @@ When called twice, replace the previously inserted \\(\\) by one $."
     (setq abbrev-expand-function (lambda ()
 				   (unless (org-in-src-block-p)
 				     (abbrev--default-expand))))
+    (org-appear-mode)
     (org-fragtog-mode)
     (turn-on-auto-revert-mode)
     (turn-on-org-cdlatex))
@@ -462,6 +537,8 @@ When called twice, replace the previously inserted \\(\\) by one $."
     :if window-system
     :ensure t)
   (use-package ob-sagemath
+    :ensure t)
+  (use-package org-appear
     :ensure t)
   (use-package org-fragtog
     :ensure t)
