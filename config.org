@@ -583,9 +583,10 @@ When called twice, replace the previously inserted \\(\\) by one $."
      (latex . t)
      (python . t)
      (ruby . t)))
-  (font-lock-add-keywords 'org-mode
-			  '(("^ *\\([-]\\) "
-			     (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+  (font-lock-add-keywords
+   'org-mode
+   '(("^ *\\([-]\\) "
+      (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
   (if (not termux-p)
   (let* ((variable-tuple
           (cond ((x-list-fonts "Fira Sans")         '(:font "Fira Sans"))
